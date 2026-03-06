@@ -8,7 +8,7 @@ const DEFAULT_TRANSCRIBE_MODEL = "openrouter/auto";
 const DEFAULT_GENERATE_MODEL = "openai/gpt-audio-mini";
 const DEFAULT_GENERATE_PROMPT = "Generate audio that speaks exactly the user's text.";
 const DEFAULT_TRANSCRIPT_PROMPT =
-  "Return only the verbatim transcript of the spoken audio and no additional commentary, explanation, or extra text.";
+  "Transcribe the audio accurately and return only the verbatim transcript with no additional commentary, explanation, or extra text.";
 const TRANSCRIBE_MODELS = [
   "google/gemini-2.0-flash-001",
   "google/gemini-2.0-flash-lite-001",
@@ -193,7 +193,7 @@ async function transcribeAudio(audioPath: string, model?: string, prompt?: strin
         content: [
           {
             type: "text",
-            text: prompt ?? "Please transcribe this audio file accurately.",
+            text: prompt ?? DEFAULT_TRANSCRIPT_PROMPT,
           },
           {
             type: "input_audio",
@@ -395,7 +395,6 @@ async function generateAudio(
     model: model ?? DEFAULT_GENERATE_MODEL,
     messages: [
       { role: "system", content: DEFAULT_GENERATE_PROMPT },
-      { role: "system", content: DEFAULT_TRANSCRIPT_PROMPT },
       { role: "user", content: text },
     ],
     modalities: ["text", "audio"],
