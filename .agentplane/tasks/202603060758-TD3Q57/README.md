@@ -1,7 +1,8 @@
 ---
 id: "202603060758-TD3Q57"
 title: "Sync help and docs with openrouter-audio CLI behavior"
-status: "DOING"
+result_summary: "Help, README, and SKILL are synchronized with current CLI behavior."
+status: "DONE"
 priority: "med"
 owner: "CODER"
 depends_on: []
@@ -18,11 +19,16 @@ verification:
   updated_at: "2026-03-06T08:01:16.040Z"
   updated_by: "CODER"
   note: "Build passed and help/docs are aligned with implemented behavior: generate usage now includes --dry-run, defaults/notes in README and SKILL reflect current CLI logic."
-commit: null
+commit:
+  hash: "e9a837b902d4566f2b9a9995fd15307950fbd673"
+  message: "📝 TD3Q57 docs: sync help and docs with CLI behavior"
 comments:
   -
     author: "CODER"
     body: "Start: audited CLI implementation and found docs/help drift; now updating help text and markdown docs to exactly match implemented options, defaults, and output behavior."
+  -
+    author: "CODER"
+    body: "Verified: documentation/help now matches implemented CLI behavior in src/openrouter-audio.ts; build succeeds and built --help shows updated generate options including --dry-run and aligned defaults/notes."
 events:
   -
     type: "status"
@@ -37,8 +43,15 @@ events:
     author: "CODER"
     state: "ok"
     note: "Build passed and help/docs are aligned with implemented behavior: generate usage now includes --dry-run, defaults/notes in README and SKILL reflect current CLI logic."
+  -
+    type: "status"
+    at: "2026-03-06T08:02:00.182Z"
+    author: "CODER"
+    from: "DOING"
+    to: "DONE"
+    note: "Verified: documentation/help now matches implemented CLI behavior in src/openrouter-audio.ts; build succeeds and built --help shows updated generate options including --dry-run and aligned defaults/notes."
 doc_version: 2
-doc_updated_at: "2026-03-06T08:01:16.042Z"
+doc_updated_at: "2026-03-06T08:02:00.182Z"
 doc_updated_by: "CODER"
 description: "Audit src/openrouter-audio.ts and align CLI help text, README.md, and SKILL.md with actual command/options/defaults behavior."
 id_source: "generated"
