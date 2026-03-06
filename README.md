@@ -187,3 +187,27 @@ npm run build
 build/openrouter-audio/openrouter-audio --help
 build/openrouter-audio/openrouter-audio generate "smoke" --dry-run
 ```
+
+## Testing
+
+Run CLI tests:
+
+```bash
+npm run test:cli
+```
+
+or:
+
+```bash
+npm test
+```
+
+What is covered by automated tests:
+
+- help and usage output
+- unknown command handling
+- argument validation for `transcribe` and `generate`
+- `generate --dry-run` JSON contract (`paths`, `transcript`, `format`)
+- `--out` path resolution behavior
+- validation errors for unsupported voice
+- API key and missing-file failure paths for `transcribe`
