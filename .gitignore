@@ -11,3 +11,4 @@
 AGENTS.md.bak-*
 .agentplane/agents/*.bak-*
 build/
+node_modules/

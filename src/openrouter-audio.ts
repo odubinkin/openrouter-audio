@@ -9,7 +9,7 @@ const DEFAULT_TRANSCRIBE_MODEL = "openrouter/auto";
 const DEFAULT_GENERATE_MODEL = "openai/gpt-audio-mini";
 const DEFAULT_GENERATE_PROMPT = "Generate audio that speaks exactly the user's content. NEVER add any additional commentary, explanation, or extra text.";
 const DEFAULT_TRANSCRIPT_PROMPT =
-  "Transcribe the audio accurately and return only the verbatim transcript with no additional commentary, explanation, or extra text.";
+  "Transcribe the audio accurately and return only the verbatim transcript. NEVER add any additional commentary, explanation, or extra text.";
 const DEFAULT_GENERATE_FORMAT = "mp3";
 const PCM16_SAMPLE_RATE = 24_000;
 const PCM16_CHANNELS: 1 = 1;
