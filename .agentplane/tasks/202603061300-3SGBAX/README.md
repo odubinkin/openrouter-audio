@@ -1,7 +1,8 @@
 ---
 id: "202603061300-3SGBAX"
 title: "Rename wrapper script to openrouter-audio.sh"
-status: "DOING"
+result_summary: "Wrapper script renamed to openrouter-audio.sh and docs synced."
+status: "DONE"
 priority: "low"
 owner: "CODER"
 depends_on: []
@@ -18,11 +19,16 @@ verification:
   updated_at: "2026-03-06T13:02:43.971Z"
   updated_by: "CODER"
   note: "Renamed wrapper output to openrouter-audio.sh, updated SKILL.md and README.md references, and rebuilt artifacts. Search over touched files shows no remaining openrouter.sh references."
-commit: null
+commit:
+  hash: "18f5c094045dca6756e975485041c6ea244aa2e1"
+  message: "✅ 3SGBAX docs: rename wrapper script to openrouter-audio.sh"
 comments:
   -
     author: "CODER"
     body: "Start: Renaming wrapper script and synchronizing SKILL.md and README.md references to prevent command-name drift for users."
+  -
+    author: "CODER"
+    body: "Verified: Wrapper naming now uses openrouter-audio.sh in build output configuration and help/docs references, with no remaining openrouter.sh mentions in touched files."
 events:
   -
     type: "status"
@@ -37,8 +43,15 @@ events:
     author: "CODER"
     state: "ok"
     note: "Renamed wrapper output to openrouter-audio.sh, updated SKILL.md and README.md references, and rebuilt artifacts. Search over touched files shows no remaining openrouter.sh references."
+  -
+    type: "status"
+    at: "2026-03-06T13:03:37.947Z"
+    author: "CODER"
+    from: "DOING"
+    to: "DONE"
+    note: "Verified: Wrapper naming now uses openrouter-audio.sh in build output configuration and help/docs references, with no remaining openrouter.sh mentions in touched files."
 doc_version: 2
-doc_updated_at: "2026-03-06T13:02:43.974Z"
+doc_updated_at: "2026-03-06T13:03:37.947Z"
 doc_updated_by: "CODER"
 description: "Rename openrouter.sh to openrouter-audio.sh and sync SKILL.md and README.md references."
 id_source: "generated"
