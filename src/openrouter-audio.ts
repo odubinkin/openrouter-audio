@@ -7,7 +7,7 @@ import { createMp3Encoder, createOggEncoder } from "wasm-media-encoders";
 const OPENROUTER_API_URL = "https://openrouter.ai/api/v1/chat/completions";
 const DEFAULT_TRANSCRIBE_MODEL = "openrouter/auto";
 const DEFAULT_GENERATE_MODEL = "openai/gpt-audio-mini";
-const DEFAULT_GENERATE_PROMPT = "Generate audio that speaks exactly the user's content.";
+const DEFAULT_GENERATE_PROMPT = "Generate audio that speaks exactly the user's content. NEVER add any additional commentary, explanation, or extra text.";
 const DEFAULT_TRANSCRIPT_PROMPT =
   "Transcribe the audio accurately and return only the verbatim transcript with no additional commentary, explanation, or extra text.";
 const DEFAULT_GENERATE_FORMAT = "mp3";
