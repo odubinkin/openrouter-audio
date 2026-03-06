@@ -7,7 +7,7 @@ metadata:
     "openclaw":
       {
         "emoji": "🔊",
-        "requires": { "env": ["OPENROUTER_API_KEY"] },
+        "requires": { "env": ["OPENROUTER_API_KEY"], "bins": ["node"] },
         "primaryEnv": "OPENROUTER_API_KEY",
       },
   }
@@ -24,6 +24,7 @@ This skill provides a small CLI for speech-to-text and text-to-speech through Op
 - `homepage`: Project/source reference.
 - `metadata.openclaw.emoji`: Visual marker for this skill.
 - `metadata.openclaw.requires.env`: Required environment variables.
+- `metadata.openclaw.requires.bins`: Required binaries in `PATH` (`node`).
 - `metadata.openclaw.primaryEnv`: Primary variable to check first (`OPENROUTER_API_KEY`).
 
 ## Core Behavior
