@@ -1,0 +1,14 @@
+{
+  "name": "openrouter-audio-skill",
+  "version": "1.0.0",
+  "private": true,
+  "description": "OpenRouter Audio OpenClaw skill CLI",
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "clean": "rm -rf build"
+  },
+  "engines": {
+    "node": ">=20",
+    "bun": ">=1.3.0"
+  }
+}
