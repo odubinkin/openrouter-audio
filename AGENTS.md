@@ -545,6 +545,32 @@ Recommended cadence:
 6. `finish` with `--commit <git-rev>` and a Verified body
 7. `task export` (if required)
 
+## B) branch_pr mode (parallel work)
+
+Rules:
+
+- Planning and closure occur only on the pinned base branch in the root checkout.
+- Implementation occurs only on per-task branch + worktree.
+- **Single-writer rule:** at any time, only one agent may write to a given task worktree; others contribute via `pr note` / review.
+
+Commits:
+
+- WIP commits are allowed in the task branch.
+- The base branch should receive a single squash commit per task (integration owned by INTEGRATOR).
+
+Exports:
+
+- Do not create/commit task exports from task branches.
+
+---
+
+# INTEGRATION & CLOSURE (branch_pr)
+
+- Only INTEGRATOR merges into base and finishes tasks on base.
+- INTEGRATOR runs verify, updates required docs, finishes tasks, and runs exports.
+
+---
+
 # SHARED STATE & EXPORTS
 
 - Task export is a read-only snapshot managed by agentplane.
