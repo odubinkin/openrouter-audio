@@ -1,7 +1,8 @@
 ---
 id: "202603061013-4S2X7B"
 title: "Refresh README and add CLI test coverage"
-status: "DOING"
+result_summary: "README is current and CLI has automated regression coverage."
+status: "DONE"
 priority: "med"
 owner: "CODER"
 depends_on: []
@@ -18,11 +19,16 @@ verification:
   updated_at: "2026-03-06T10:16:06.689Z"
   updated_by: "TESTER"
   note: "CLI tests and build pass locally: npm run build, npm run test:cli, npm test (9/9 passing)."
-commit: null
+commit:
+  hash: "e7b1acce48cb144c46a103d497b77dfd48cfb6b5"
+  message: "✅ 4S2X7B code: add cli tests and refresh readme"
 comments:
   -
     author: "CODER"
     body: "Start: Implementing README refresh and deterministic CLI test suite with local-only verification commands."
+  -
+    author: "CODER"
+    body: "Verified: Updated README and added deterministic CLI tests; build and both test commands pass locally with 9/9 successful checks."
 events:
   -
     type: "status"
@@ -37,9 +43,16 @@ events:
     author: "TESTER"
     state: "ok"
     note: "CLI tests and build pass locally: npm run build, npm run test:cli, npm test (9/9 passing)."
+  -
+    type: "status"
+    at: "2026-03-06T10:16:58.490Z"
+    author: "CODER"
+    from: "DOING"
+    to: "DONE"
+    note: "Verified: Updated README and added deterministic CLI tests; build and both test commands pass locally with 9/9 successful checks."
 doc_version: 2
-doc_updated_at: "2026-03-06T10:16:06.690Z"
-doc_updated_by: "TESTER"
+doc_updated_at: "2026-03-06T10:16:58.490Z"
+doc_updated_by: "CODER"
 description: "Update README.md to reflect current CLI behavior and add best-practice automated tests for openrouter-audio CLI."
 id_source: "generated"
 ---
