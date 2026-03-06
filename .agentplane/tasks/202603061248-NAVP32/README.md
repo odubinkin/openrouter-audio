@@ -1,7 +1,9 @@
 ---
 id: "202603061248-NAVP32"
 title: "Use workspace tmp directory for generated audio"
-status: "DOING"
+result_summary: "CLI now prefers WORKSPACE_DIR/tmp for generated audio with system tmp fallback."
+risk_level: "low"
+status: "DONE"
 priority: "med"
 owner: "CODER"
 depends_on: []
@@ -18,11 +20,16 @@ verification:
   updated_at: "2026-03-06T12:51:14.705Z"
   updated_by: "TESTER"
   note: "CLI build/test checks passed"
-commit: null
+commit:
+  hash: "4231a56e64a70323437d8d51b37303b46b602ba2"
+  message: "✨ NAVP32 code: route default audio output to workspace tmp"
 comments:
   -
     author: "CODER"
     body: "Start: implement workspace tmp resolution with safe fallback and sync docs for optional env usage plus cleanup requirement."
+  -
+    author: "CODER"
+    body: "Verified: workspace tmp resolution implemented with fallback, docs updated, and CLI build/tests passed."
 events:
   -
     type: "status"
@@ -37,9 +44,16 @@ events:
     author: "TESTER"
     state: "ok"
     note: "CLI build/test checks passed"
+  -
+    type: "status"
+    at: "2026-03-06T12:52:03.744Z"
+    author: "CODER"
+    from: "DOING"
+    to: "DONE"
+    note: "Verified: workspace tmp resolution implemented with fallback, docs updated, and CLI build/tests passed."
 doc_version: 2
-doc_updated_at: "2026-03-06T12:51:14.706Z"
-doc_updated_by: "TESTER"
+doc_updated_at: "2026-03-06T12:52:03.744Z"
+doc_updated_by: "CODER"
 description: "Resolve WORKSPACE_DIR from optional OpenClaw env/profile paths and write generated audio to WORKSPACE_DIR/tmp when available, with fallback to system tmp. Update skill docs to mention optional env behavior and mandatory post-use audio cleanup."
 id_source: "generated"
 ---
