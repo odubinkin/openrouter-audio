@@ -2,6 +2,7 @@
 import { existsSync, readFileSync, writeFileSync } from "node:fs";
 import { extname } from "node:path";
 import os from "node:os";
+import { createMp3Encoder, createOggEncoder } from "wasm-media-encoders";
 
 const OPENROUTER_API_URL = "https://openrouter.ai/api/v1/chat/completions";
 const DEFAULT_TRANSCRIBE_MODEL = "openrouter/auto";
@@ -9,6 +10,9 @@ const DEFAULT_GENERATE_MODEL = "openai/gpt-audio-mini";
 const DEFAULT_GENERATE_PROMPT = "Generate audio that speaks exactly the user's content.";
 const DEFAULT_TRANSCRIPT_PROMPT =
   "Transcribe the audio accurately and return only the verbatim transcript with no additional commentary, explanation, or extra text.";
+const DEFAULT_GENERATE_FORMAT = "mp3";
+const PCM16_SAMPLE_RATE = 24_000;
+const PCM16_CHANNELS: 1 = 1;
 const TRANSCRIBE_MODELS = [
   "google/gemini-2.0-flash-001",
   "google/gemini-2.0-flash-lite-001",
@@ -47,13 +51,18 @@ const SUPPORTED_INPUT_FORMATS = new Set([
   "pcm24",
 ]);
 
-const SUPPORTED_OUTPUT_FORMATS = new Set(["wav", "mp3", "flac", "opus", "pcm16"]);
+const SUPPORTED_OUTPUT_FORMATS = new Set(["wav", "mp3", "ogg", "pcm16"]);
 const SUPPORTED_VOICES = new Set(["alloy", "echo", "fable", "onyx", "nova", "shimmer"]);
 
 type ParsedArgs = {
   command?: string;
   positional: string[];
   options: Record<string, string | boolean>;
+};
+
+type AudioPayload = {
+  data: string;
+  transcript?: string;
 };
 
 function formatModelList(title: string, models: readonly string[]): string {
@@ -80,8 +89,9 @@ Notes:
   - transcribe infers input format from file extension unless --format is set
   - generate saves output audio to system tmp and returns path(s)
   - generate default voice is alloy
-  - --format defaults to pcm16
+  - --format defaults to ${DEFAULT_GENERATE_FORMAT}
   - --dry-run skips API call and returns planned tmp output path(s)
+  - generate always requests pcm16 from API and converts locally for other output formats
   - generate always uses stream=true for audio output
 
 ${formatModelList("Transcribe models (OpenRouter audio input)", TRANSCRIBE_MODELS)}
@@ -255,11 +265,6 @@ function newTmpAudioPath(format: string, index: number): string {
   return `${os.tmpdir()}/openrouter-audio-${id}${suffix}.${format}`;
 }
 
-type AudioPayload = {
-  data: string;
-  transcript?: string;
-};
-
 function collectAudioPayloadsFromJson(result: unknown): AudioPayload[] {
   const payloads: AudioPayload[] = [];
   const root = result as {
@@ -361,15 +366,112 @@ async function readSseAudioPayloads(response: Response): Promise<AudioPayload[]>
   ];
 }
 
-function writeAudioPayloadsToTmp(payloads: AudioPayload[], format: string): { paths: string[]; transcript: string } {
+function pcm16ToFloat32Mono(pcm16Bytes: Buffer): Float32Array {
+  const sampleCount = Math.floor(pcm16Bytes.length / 2);
+  const samples = new Float32Array(sampleCount);
+
+  for (let i = 0; i < sampleCount; i += 1) {
+    const value = pcm16Bytes.readInt16LE(i * 2);
+    samples[i] = Math.max(-1, value / 32768);
+  }
+
+  return samples;
+}
+
+function buildWavHeader(dataLength: number, sampleRate: number, channels: number, bitsPerSample: number): Buffer {
+  const header = Buffer.alloc(44);
+  const blockAlign = channels * (bitsPerSample / 8);
+  const byteRate = sampleRate * blockAlign;
+
+  header.write("RIFF", 0, 4, "ascii");
+  header.writeUInt32LE(36 + dataLength, 4);
+  header.write("WAVE", 8, 4, "ascii");
+  header.write("fmt ", 12, 4, "ascii");
+  header.writeUInt32LE(16, 16);
+  header.writeUInt16LE(1, 20);
+  header.writeUInt16LE(channels, 22);
+  header.writeUInt32LE(sampleRate, 24);
+  header.writeUInt32LE(byteRate, 28);
+  header.writeUInt16LE(blockAlign, 32);
+  header.writeUInt16LE(bitsPerSample, 34);
+  header.write("data", 36, 4, "ascii");
+  header.writeUInt32LE(dataLength, 40);
+
+  return header;
+}
+
+function pcm16ToWavBuffer(pcm16Bytes: Buffer): Buffer {
+  const header = buildWavHeader(pcm16Bytes.length, PCM16_SAMPLE_RATE, PCM16_CHANNELS, 16);
+  return Buffer.concat([header, pcm16Bytes]);
+}
+
+function copyEncodedChunk(chunk: Uint8Array): Buffer {
+  return Buffer.from(chunk.slice());
+}
+
+async function pcm16ToMp3Buffer(pcm16Bytes: Buffer): Promise<Buffer> {
+  const encoder = await createMp3Encoder();
+  encoder.configure({
+    sampleRate: PCM16_SAMPLE_RATE,
+    channels: PCM16_CHANNELS,
+    vbrQuality: 4,
+  });
+
+  const mono = pcm16ToFloat32Mono(pcm16Bytes);
+  const first = copyEncodedChunk(encoder.encode([mono]));
+  const last = copyEncodedChunk(encoder.finalize());
+
+  return Buffer.concat([first, last]);
+}
+
+async function pcm16ToOggBuffer(pcm16Bytes: Buffer): Promise<Buffer> {
+  const encoder = await createOggEncoder();
+  encoder.configure({
+    sampleRate: PCM16_SAMPLE_RATE,
+    channels: PCM16_CHANNELS,
+    vbrQuality: 3,
+  });
+
+  const mono = pcm16ToFloat32Mono(pcm16Bytes);
+  const first = copyEncodedChunk(encoder.encode([mono]));
+  const last = copyEncodedChunk(encoder.finalize());
+
+  return Buffer.concat([first, last]);
+}
+
+async function convertPcm16ToFormat(pcm16Bytes: Buffer, format: string): Promise<Buffer> {
+  if (format === "pcm16") {
+    return pcm16Bytes;
+  }
+
+  if (format === "wav") {
+    return pcm16ToWavBuffer(pcm16Bytes);
+  }
+
+  if (format === "mp3") {
+    return pcm16ToMp3Buffer(pcm16Bytes);
+  }
+
+  if (format === "ogg") {
+    return pcm16ToOggBuffer(pcm16Bytes);
+  }
+
+  die(`Error: Unsupported format '${format}'. Use: ${Array.from(SUPPORTED_OUTPUT_FORMATS).join(", ")}`);
+}
+
+async function writeAudioPayloadsToTmp(
+  payloads: AudioPayload[],
+  requestedFormat: string,
+): Promise<{ paths: string[]; transcript: string }> {
   const paths: string[] = [];
   const transcriptParts: string[] = [];
 
   for (let i = 0; i < payloads.length; i += 1) {
     const payload = payloads[i];
-    const outPath = newTmpAudioPath(format, i);
-    const bytes = Buffer.from(payload.data, "base64");
-    writeFileSync(outPath, bytes);
+    const pcm16Bytes = Buffer.from(payload.data, "base64");
+    const convertedBytes = await convertPcm16ToFormat(pcm16Bytes, requestedFormat);
+    const outPath = newTmpAudioPath(requestedFormat, i);
+    writeFileSync(outPath, convertedBytes);
     paths.push(outPath);
     if (payload.transcript) {
       transcriptParts.push(payload.transcript);
@@ -417,7 +519,9 @@ async function generateAudio(
     modalities: ["text", "audio"],
     audio: {
       voice,
-      format,
+      // OpenRouter currently returns audio reliably as pcm16; requesting mp3/ogg here can fail.
+      // Keep API response format fixed and convert locally to the user-requested output format.
+      format: "pcm16",
     },
     stream: true,
   };
@@ -442,7 +546,7 @@ async function generateAudio(
     die("Error: No audio data received from API.");
   }
 
-  const result = writeAudioPayloadsToTmp(payloads, format);
+  const result = await writeAudioPayloadsToTmp(payloads, format);
   return {
     paths: result.paths,
     transcript: result.transcript,
@@ -480,7 +584,7 @@ async function main(): Promise<void> {
     }
 
     const voice = getStringOption(parsed.options, "voice") ?? "alloy";
-    const format = (getStringOption(parsed.options, "format") ?? "pcm16").toLowerCase();
+    const format = (getStringOption(parsed.options, "format") ?? DEFAULT_GENERATE_FORMAT).toLowerCase();
     const model = getStringOption(parsed.options, "model");
     const prompt = getStringOption(parsed.options, "prompt");
     const dryRun = parsed.options["dry-run"] === true;

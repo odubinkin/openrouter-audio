@@ -23,26 +23,28 @@ This skill provides audio transcription (speech-to-text) and audio generation (t
 
 ### Audio Generation (TTS)
 - Voices: alloy, echo, fable, onyx, nova, shimmer
-- Output formats: wav, mp3, flac, opus, pcm16
+- Output formats: wav, mp3, ogg, pcm16
 - Generated files are saved to the system tmp directory
 - Returns JSON including generated path(s)
 - Model override support (`--model`)
 - Available audio-output models are shown in `--help`
 - Custom prompt support (`--prompt`)
+- API request is always sent as `pcm16`; CLI converts to requested output format locally
 
 ## Defaults
 
 - Transcription model: `openrouter/auto`
 - Generation model: `openai/gpt-audio-mini`
 - Generation voice: `alloy`
-- Generation format: `pcm16`
+- Generation format: `mp3`
+- Recommended usage: prefer default parameters unless the user explicitly needs overrides
 
 ## Format Option (`--format`)
 
 - `transcribe`: `--format` sets the input audio format explicitly (otherwise it is inferred from file extension).
-- `generate`: `--format` sets the output audio format (default: `pcm16`).
+- `generate`: `--format` sets the output audio format (default: `mp3`).
 - Transcribe supported input formats: `wav`, `mp3`, `aiff`, `aac`, `ogg`, `flac`, `m4a`, `pcm16`, `pcm24`.
-- Generate supported output formats: `wav`, `mp3`, `flac`, `opus`, `pcm16`.
+- Generate supported output formats: `wav`, `mp3`, `ogg`, `pcm16`.
 
 ## Usage
 
@@ -56,7 +58,7 @@ This skill provides audio transcription (speech-to-text) and audio generation (t
 # Transcribe with custom prompt/model
 ./openrouter-audio transcribe meeting.mp3 --prompt "Summarize the call" --model openrouter/auto
 
-# Generate with defaults (format=pcm16)
+# Generate with defaults (recommended, format=mp3)
 ./openrouter-audio generate "Hello world"
 
 # Generate with explicit options and model override
