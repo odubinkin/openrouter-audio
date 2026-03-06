@@ -1,7 +1,7 @@
 ---
 name: openrouter-audio
 description: Audio transcription and text-to-speech generation using OpenRouter API. Use when the user needs to transcribe audio files to text or generate speech/audio from text. Supports multiple audio formats for input and output, reads API key from environment, and writes generated audio to system tmp or an explicit output path.
-homepage: https://openrouter.ai/docs/api-reference/overview
+homepage: https://github.com/odubinkin/openrouter-audio/
 metadata:
   {
     "openclaw":
@@ -20,7 +20,6 @@ This skill provides audio transcription (speech-to-text) and audio generation (t
 ## What This Skill Provides
 
 - A CLI utility with two commands: `transcribe` and `generate`
-- OpenRouter API integration using `OPENROUTER_API_KEY`
 - Runtime usage of a prebuilt skill CLI located at `{baseDir}/openrouter-audio`
 
 ## Capabilities
@@ -35,11 +34,11 @@ This skill provides audio transcription (speech-to-text) and audio generation (t
 - Voices: alloy, echo, fable, onyx, nova, shimmer
 - Output formats: wav, mp3, ogg, pcm16
 - Generated files are saved to system tmp by default, or to `--out` path when provided
+- If multiple files are produced, additional files use numeric suffixes near the target `--out` path
 - Returns JSON including generated path(s)
 - Model override support (`--model`)
 - Available audio-output models are shown in `--help`
 - Custom prompt support (`--prompt`)
-- API request is always sent as `pcm16`; CLI converts to requested output format locally
 
 ## Defaults
 
@@ -56,6 +55,12 @@ This skill provides audio transcription (speech-to-text) and audio generation (t
 - `generate`: `--out` sets the output file path explicitly.
 - Transcribe supported input formats: `wav`, `mp3`, `aiff`, `aac`, `ogg`, `flac`, `m4a`, `pcm16`, `pcm24`.
 - Generate supported output formats: `wav`, `mp3`, `ogg`, `pcm16`.
+
+## Output Path Option (`--out`)
+
+- `generate` without `--out` writes output file(s) to the system tmp directory.
+- `generate --out <path>` writes output to your explicit target path.
+- If more than one output file is created, additional files use numeric suffixes based on the provided `--out` path.
 
 ## Usage
 
