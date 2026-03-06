@@ -43,12 +43,20 @@ Use defaults unless the user explicitly asks for overrides:
 
 ## Models and Formats
 
-Do not hardcode long model/format inventories in prompts.  
-Always check current supported values via CLI help:
+Full utility description, including supported models and formats, is available in CLI help when needed:
 
 ```bash
 {baseDir}/openrouter-audio --help
 ```
+
+## Prompt Behavior
+
+- Default prompts keep behavior straightforward:
+  - `transcribe`: speech-to-text transcript
+  - `generate`: direct TTS for the provided text
+- Custom `--prompt` can change behavior. For example:
+  - ask for an audio summary of the source audio
+  - ask to generate an audio answer to a question
 
 ## Usage
 
