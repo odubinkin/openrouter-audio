@@ -1,7 +1,8 @@
 ---
 id: "202603061201-CJ5ANY"
 title: "Rename wrapper script to openrouter.sh and sync docs"
-status: "DOING"
+result_summary: "Renamed launcher target to openrouter.sh and synchronized docs/help references."
+status: "DONE"
 priority: "med"
 owner: "CODER"
 depends_on: []
@@ -18,11 +19,16 @@ verification:
   updated_at: "2026-03-06T12:03:48.301Z"
   updated_by: "TESTER"
   note: "Build now generates build/openrouter-audio/openrouter.sh, CLI usage/help shows openrouter.sh, docs and SKILL paths were updated, and npm test passes (9/9)."
-commit: null
+commit:
+  hash: "09b9db606f996f4af674e29f1269615c0868ff10"
+  message: "🔧 CJ5ANY code: rename wrapper to openrouter.sh and sync docs"
 comments:
   -
     author: "CODER"
     body: "Start: rename generated launcher to openrouter.sh and synchronize usage/help/docs references."
+  -
+    author: "CODER"
+    body: "Verified: build script now emits openrouter.sh launcher, CLI help usage lines reference openrouter.sh, README and SKILL command paths are updated, and npm test passes."
 events:
   -
     type: "status"
@@ -37,9 +43,16 @@ events:
     author: "TESTER"
     state: "ok"
     note: "Build now generates build/openrouter-audio/openrouter.sh, CLI usage/help shows openrouter.sh, docs and SKILL paths were updated, and npm test passes (9/9)."
+  -
+    type: "status"
+    at: "2026-03-06T12:04:02.570Z"
+    author: "CODER"
+    from: "DOING"
+    to: "DONE"
+    note: "Verified: build script now emits openrouter.sh launcher, CLI help usage lines reference openrouter.sh, README and SKILL command paths are updated, and npm test passes."
 doc_version: 2
-doc_updated_at: "2026-03-06T12:03:48.307Z"
-doc_updated_by: "TESTER"
+doc_updated_at: "2026-03-06T12:04:02.570Z"
+doc_updated_by: "CODER"
 description: "Rename generated bash wrapper from openrouter-audio to openrouter.sh for ClawHub requirement, and update README/SKILL/help references accordingly."
 id_source: "generated"
 ---
