@@ -6,6 +6,7 @@ OpenRouter Audio is an OpenClaw skill that provides:
 - text-to-speech generation (`generate`)
 
 The implementation is a TypeScript CLI bundled into a JavaScript runtime artifact plus a small bash launcher.
+This skill was developed as part of the app.simpleclaw.ru project.
 
 ## Repository Layout
 
