@@ -1,7 +1,8 @@
 ---
 id: "202603061057-KRV8H9"
 title: "Compact and restructure SKILL.md"
-status: "DOING"
+result_summary: "SKILL.md is now compact and defaults-first with basic examples only."
+status: "DONE"
 priority: "med"
 owner: "DOCS"
 depends_on: []
@@ -18,11 +19,16 @@ verification:
   updated_at: "2026-03-06T10:58:14.211Z"
   updated_by: "TESTER"
   note: "SKILL.md is now compact and structured, includes main key purpose mapping, points model/format discovery to --help, explicitly recommends defaults, and keeps only basic command-path examples without custom prompt/model overrides."
-commit: null
+commit:
+  hash: "c751d3d196db71166eba40c550a71df948e3bff2"
+  message: "📝 KRV8H9 docs: compact and structure SKILL.md"
 comments:
   -
     author: "DOCS"
     body: "Start: compactly restructure SKILL.md, keep only core guidance and basic command examples as requested."
+  -
+    author: "DOCS"
+    body: "Verified: SKILL.md was reduced and restructured, key metadata fields are explained, model/format lists are delegated to --help, defaults are recommended, and examples are limited to core command paths only."
 events:
   -
     type: "status"
@@ -37,9 +43,16 @@ events:
     author: "TESTER"
     state: "ok"
     note: "SKILL.md is now compact and structured, includes main key purpose mapping, points model/format discovery to --help, explicitly recommends defaults, and keeps only basic command-path examples without custom prompt/model overrides."
+  -
+    type: "status"
+    at: "2026-03-06T10:58:54.525Z"
+    author: "DOCS"
+    from: "DOING"
+    to: "DONE"
+    note: "Verified: SKILL.md was reduced and restructured, key metadata fields are explained, model/format lists are delegated to --help, defaults are recommended, and examples are limited to core command paths only."
 doc_version: 2
-doc_updated_at: "2026-03-06T10:58:14.215Z"
-doc_updated_by: "TESTER"
+doc_updated_at: "2026-03-06T10:58:54.525Z"
+doc_updated_by: "DOCS"
 description: "Make SKILL.md shorter and more structured: highlight main keys and their purpose, direct model/format lists to --help, recommend defaults, keep only basic path examples without custom prompts/models."
 id_source: "generated"
 ---
