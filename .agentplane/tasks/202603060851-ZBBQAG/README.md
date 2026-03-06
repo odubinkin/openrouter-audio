@@ -1,7 +1,8 @@
 ---
 id: "202603060851-ZBBQAG"
 title: "Force PCM16 API output and local mp3/ogg encoding"
-status: "DOING"
+result_summary: "Generate now always requests pcm16 and converts outputs locally."
+status: "DONE"
 priority: "med"
 owner: "CODER"
 depends_on: []
@@ -18,11 +19,16 @@ verification:
   updated_at: "2026-03-06T08:55:46.068Z"
   updated_by: "CODER"
   note: "Verify: npm run build passed; --help now shows default generate format mp3 and local pcm16 conversion note; generate --dry-run defaults to mp3 path; generate --format flac fails as unsupported; source and built artifacts keep API payload audio.format fixed to pcm16."
-commit: null
+commit:
+  hash: "5b4d089ffefe5f5f0d4569af3a4953cdab362417"
+  message: "🚧 ZBBQAG audio: enforce pcm16 API and local format conversion"
 comments:
   -
     author: "CODER"
     body: "Start: Implementing fixed pcm16 API output with local mp3/ogg/wav conversion, updating supported formats/defaults, and synchronizing help plus repository documentation."
+  -
+    author: "CODER"
+    body: "Verified: Implemented fixed pcm16 API format for generate requests, added local pcm16 conversion to wav/mp3/ogg using wasm-media-encoders and wav header wrapping, removed flac/opus outputs, switched default format to mp3, and synced help plus docs."
 events:
   -
     type: "status"
@@ -37,8 +43,15 @@ events:
     author: "CODER"
     state: "ok"
     note: "Verify: npm run build passed; --help now shows default generate format mp3 and local pcm16 conversion note; generate --dry-run defaults to mp3 path; generate --format flac fails as unsupported; source and built artifacts keep API payload audio.format fixed to pcm16."
+  -
+    type: "status"
+    at: "2026-03-06T08:56:27.560Z"
+    author: "CODER"
+    from: "DOING"
+    to: "DONE"
+    note: "Verified: Implemented fixed pcm16 API format for generate requests, added local pcm16 conversion to wav/mp3/ogg using wasm-media-encoders and wav header wrapping, removed flac/opus outputs, switched default format to mp3, and synced help plus docs."
 doc_version: 2
-doc_updated_at: "2026-03-06T08:55:46.072Z"
+doc_updated_at: "2026-03-06T08:56:27.560Z"
 doc_updated_by: "CODER"
 description: "Always request pcm16 from OpenRouter generate API, convert pcm16 to mp3/ogg locally via wasm-media-encoders, keep wav header wrapping, remove flac/opus from outputs, set default output format to mp3, and update help/docs/SKILL.md."
 id_source: "generated"
