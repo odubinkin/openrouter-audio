@@ -1,7 +1,8 @@
 ---
 id: "202603060918-DJBVYC"
 title: "Ignore node_modules and commit pending TS prompt tweak"
-status: "DOING"
+result_summary: "node_modules ignored and pending ts edit committed."
+status: "DONE"
 priority: "low"
 owner: "CODER"
 depends_on: []
@@ -18,11 +19,16 @@ verification:
   updated_at: "2026-03-06T09:19:34.588Z"
   updated_by: "CODER"
   note: "Verify: diff contains only .gitignore node_modules rule and existing user edit in src/openrouter-audio.ts; node_modules remains untracked; no unrelated tracked files modified."
-commit: null
+commit:
+  hash: "edaa69b45a9afa0373393f3fdc9e7c897f26a952"
+  message: "✅ DJBVYC repo: ignore node_modules and commit pending ts edit"
 comments:
   -
     author: "CODER"
     body: "Start: Applying gitignore node_modules update and committing existing ts edit as requested by user."
+  -
+    author: "CODER"
+    body: "Verified: added node_modules/ to .gitignore and committed the existing user-provided transcript prompt wording change in src/openrouter-audio.ts using strict allowlist staging."
 events:
   -
     type: "status"
@@ -37,8 +43,15 @@ events:
     author: "CODER"
     state: "ok"
     note: "Verify: diff contains only .gitignore node_modules rule and existing user edit in src/openrouter-audio.ts; node_modules remains untracked; no unrelated tracked files modified."
+  -
+    type: "status"
+    at: "2026-03-06T09:19:45.969Z"
+    author: "CODER"
+    from: "DOING"
+    to: "DONE"
+    note: "Verified: added node_modules/ to .gitignore and committed the existing user-provided transcript prompt wording change in src/openrouter-audio.ts using strict allowlist staging."
 doc_version: 2
-doc_updated_at: "2026-03-06T09:19:34.591Z"
+doc_updated_at: "2026-03-06T09:19:45.969Z"
 doc_updated_by: "CODER"
 description: "Add node_modules to .gitignore and commit current src/openrouter-audio.ts changes without altering user edits."
 id_source: "generated"
