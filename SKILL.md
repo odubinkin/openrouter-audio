@@ -1,6 +1,16 @@
 ---
 name: openrouter-audio
 description: Audio transcription and text-to-speech generation using OpenRouter API. Use when the user needs to transcribe audio files to text or generate speech/audio from text. Supports multiple audio formats for input and output, reads API key from environment, and writes generated audio to system tmp or an explicit output path.
+homepage: https://openrouter.ai/docs/api-reference/overview
+metadata:
+  {
+    "openclaw":
+      {
+        "emoji": "🔊",
+        "requires": { "env": ["OPENROUTER_API_KEY"] },
+        "primaryEnv": "OPENROUTER_API_KEY",
+      },
+  }
 ---
 
 # OpenRouter Audio
@@ -11,7 +21,7 @@ This skill provides audio transcription (speech-to-text) and audio generation (t
 
 - A CLI utility with two commands: `transcribe` and `generate`
 - OpenRouter API integration using `OPENROUTER_API_KEY`
-- Runtime usage of a prebuilt skill CLI located at `./openrouter-audio`
+- Runtime usage of a prebuilt skill CLI located at `{baseDir}/openrouter-audio`
 
 ## Capabilities
 
@@ -51,25 +61,25 @@ This skill provides audio transcription (speech-to-text) and audio generation (t
 
 ```bash
 # Help
-./openrouter-audio --help
+{baseDir}/openrouter-audio --help
 
 # Transcribe
-./openrouter-audio transcribe recording.wav
+{baseDir}/openrouter-audio transcribe recording.wav
 
 # Transcribe with custom prompt/model
-./openrouter-audio transcribe meeting.mp3 --prompt "Summarize the call" --model openrouter/auto
+{baseDir}/openrouter-audio transcribe meeting.mp3 --prompt "Summarize the call" --model openrouter/auto
 
 # Generate with defaults (recommended, format=mp3)
-./openrouter-audio generate "Hello world"
+{baseDir}/openrouter-audio generate "Hello world"
 
 # Generate with explicit options and model override
-./openrouter-audio generate "Welcome" --voice nova --format wav --model openai/gpt-audio-mini
+{baseDir}/openrouter-audio generate "Welcome" --voice nova --format wav --model openai/gpt-audio-mini
 
 # Generate to a specific file path
-./openrouter-audio generate "Welcome" --out ./artifacts/welcome.mp3
+{baseDir}/openrouter-audio generate "Welcome" --out ./artifacts/welcome.mp3
 
 # Generate with custom prompt override
-./openrouter-audio generate "Welcome" --prompt "Speak the exact message text with a calm and clear narration style."
+{baseDir}/openrouter-audio generate "Welcome" --prompt "Speak the exact message text with a calm and clear narration style."
 ```
 
 ## Output Behavior
