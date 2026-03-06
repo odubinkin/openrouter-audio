@@ -32,9 +32,10 @@ This skill provides audio transcription (speech-to-text) and audio generation (t
 
 - Transcription model: `openrouter/auto`
 - Generation model: `openai/gpt-audio-mini`
+- Generation voice: `alloy`
 - Generation format: `pcm16`
 - Generation requests always use `stream: true`
-- Generation uses a default English instruction to keep transcript output limited to the spoken text
+- Generation prompt default: `Generate audio that speaks exactly the user's content.`
 
 ## Build
 
@@ -69,6 +70,7 @@ export OPENROUTER_API_KEY="your-api-key"
 ```
 
 No CLI option exists for API key input.
+Exception: `generate --dry-run` skips API calls and does not require the key.
 
 ## Usage
 
@@ -90,6 +92,9 @@ build/openrouter-audio/openrouter-audio generate "Welcome" --voice nova --format
 
 # Generate with custom prompt override
 build/openrouter-audio/openrouter-audio generate "Welcome" --prompt "Speak with a calm and clear narration style."
+
+# Generate dry-run (no API call)
+build/openrouter-audio/openrouter-audio generate "Test" --dry-run
 ```
 
 ## Output Behavior
@@ -105,5 +110,5 @@ build/openrouter-audio/openrouter-audio generate "Welcome" --prompt "Speak with 
 - `--dry-run` is supported for `generate` and returns expected tmp output path(s) without API call.
 - If required env var is missing, the CLI exits with an error.
 - `--help` includes the current OpenRouter audio-input and audio-output model identifiers used for `--model`.
-- Embedded model lists were refreshed from OpenRouter catalog pages on 2026-03-06.
-- `generate` supports `--prompt` to override `DEFAULT_GENERATE_PROMPT`.
+- Embedded model lists come from constants in `src/openrouter-audio.ts`.
+- `generate` supports `--prompt` to override the default prompt text.

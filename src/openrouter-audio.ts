@@ -65,7 +65,7 @@ function usage(): string {
 
 Usage:
   openrouter-audio transcribe <audio_file> [--format FORMAT] [--model MODEL] [--prompt PROMPT]
-  openrouter-audio generate <text> [--voice VOICE] [--format FORMAT] [--model MODEL] [--prompt PROMPT]
+  openrouter-audio generate <text> [--voice VOICE] [--format FORMAT] [--model MODEL] [--prompt PROMPT] [--dry-run]
   openrouter-audio --help
 
 Model option:
@@ -79,7 +79,9 @@ Notes:
   - API key is only read from OPENROUTER_API_KEY
   - transcribe infers input format from file extension unless --format is set
   - generate saves output audio to system tmp and returns path(s)
+  - generate default voice is alloy
   - --format defaults to pcm16
+  - --dry-run skips API call and returns planned tmp output path(s)
   - generate always uses stream=true for audio output
 
 ${formatModelList("Transcribe models (OpenRouter audio input)", TRANSCRIBE_MODELS)}

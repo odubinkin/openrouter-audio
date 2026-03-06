@@ -69,7 +69,7 @@ build/openrouter-audio/openrouter-audio transcribe <audio_file> [--format FORMAT
 ```
 
 Audio-input models currently listed by OpenRouter:
-These identifiers were taken from the OpenRouter audio model catalog on 2026-03-06.
+These identifiers are embedded in the CLI help/model list for `transcribe`.
 
 - `google/gemini-2.0-flash-001`
 - `google/gemini-2.0-flash-lite-001`
@@ -103,7 +103,7 @@ build/openrouter-audio/openrouter-audio generate <text> [--voice VOICE] [--forma
 ```
 
 Audio-output models currently listed by OpenRouter:
-These identifiers were taken from the OpenRouter audio model catalog on 2026-03-06.
+These identifiers are embedded in the CLI help/model list for `generate`.
 
 - `openai/gpt-4o-audio-preview`
 - `openai/gpt-audio`
@@ -132,11 +132,13 @@ build/openrouter-audio/openrouter-audio generate "Test" --dry-run
 - Transcribe format: `--format` overrides auto-detection from file extension
 - Default transcribe model: `openrouter/auto`
 - Default generate model: `openai/gpt-audio-mini`
+- Default generate voice: `alloy`
 - Default generate format: `pcm16`
 - Generate requests always use `stream: true`
-- Generate uses `DEFAULT_GENERATE_PROMPT` unless `--prompt` is provided
+- Generate default prompt text: `Generate audio that speaks exactly the user's content.`
 - Generated audio output location: system temporary directory (`tmp`)
 - `generate` output: JSON with `paths`, `transcript`, `format`
+- `generate --dry-run`: skips API call and returns planned tmp path(s)
 
 ## Supported Values
 
@@ -161,6 +163,8 @@ Set env var and rerun:
 ```bash
 export OPENROUTER_API_KEY="your-api-key"
 ```
+
+Note: `generate --dry-run` does not require the API key.
 
 ### `No audio data received from API`
 
