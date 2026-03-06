@@ -87,6 +87,9 @@ build/openrouter-audio/openrouter-audio generate "Hello world"
 
 # Generate with explicit options and model override
 build/openrouter-audio/openrouter-audio generate "Welcome" --voice nova --format wav --model openai/gpt-audio-mini
+
+# Generate with custom prompt override
+build/openrouter-audio/openrouter-audio generate "Welcome" --prompt "Speak with a calm and clear narration style."
 ```
 
 ## Output Behavior
@@ -103,3 +106,4 @@ build/openrouter-audio/openrouter-audio generate "Welcome" --voice nova --format
 - If required env var is missing, the CLI exits with an error.
 - `--help` includes the current OpenRouter audio-input and audio-output model identifiers used for `--model`.
 - Embedded model lists were refreshed from OpenRouter catalog pages on 2026-03-06.
+- `generate` supports `--prompt` to override `DEFAULT_GENERATE_PROMPT`.

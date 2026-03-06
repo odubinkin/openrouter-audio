@@ -99,7 +99,7 @@ build/openrouter-audio/openrouter-audio transcribe ./samples/meeting.mp3 --promp
 ### Generate
 
 ```bash
-build/openrouter-audio/openrouter-audio generate <text> [--voice VOICE] [--format FORMAT] [--model MODEL] [--dry-run]
+build/openrouter-audio/openrouter-audio generate <text> [--voice VOICE] [--format FORMAT] [--model MODEL] [--prompt PROMPT] [--dry-run]
 ```
 
 Audio-output models currently listed by OpenRouter:
@@ -118,6 +118,9 @@ build/openrouter-audio/openrouter-audio generate "Hello from OpenClaw"
 # explicit format and voice
 build/openrouter-audio/openrouter-audio generate "Welcome" --voice nova --format wav
 
+# override the default generation prompt
+build/openrouter-audio/openrouter-audio generate "Welcome" --prompt "Speak with a calm and clear narration style."
+
 # dry-run: no API call, only planned tmp output path
 build/openrouter-audio/openrouter-audio generate "Test" --dry-run
 ```
@@ -130,7 +133,7 @@ build/openrouter-audio/openrouter-audio generate "Test" --dry-run
 - Default generate model: `openai/gpt-audio-mini`
 - Default generate format: `pcm16`
 - Generate requests always use `stream: true`
-- Generate requests include a default English instruction to return only the spoken transcript with no extra commentary
+- Generate uses `DEFAULT_GENERATE_PROMPT` unless `--prompt` is provided
 - Generated audio output location: system temporary directory (`tmp`)
 - `generate` output: JSON with `paths`, `transcript`, `format`
 

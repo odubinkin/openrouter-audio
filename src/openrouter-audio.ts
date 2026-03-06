@@ -65,7 +65,7 @@ function usage(): string {
 
 Usage:
   openrouter-audio transcribe <audio_file> [--model MODEL] [--prompt PROMPT]
-  openrouter-audio generate <text> [--voice VOICE] [--format FORMAT] [--model MODEL]
+  openrouter-audio generate <text> [--voice VOICE] [--format FORMAT] [--model MODEL] [--prompt PROMPT]
   openrouter-audio --help
 
 Model option:
@@ -371,6 +371,7 @@ async function generateAudio(
   voice: string,
   format: string,
   model?: string,
+  prompt?: string,
   dryRun = false,
 ): Promise<{ paths: string[]; transcript: string; format: string }> {
   if (!SUPPORTED_VOICES.has(voice)) {
@@ -394,7 +395,7 @@ async function generateAudio(
   const payload = {
     model: model ?? DEFAULT_GENERATE_MODEL,
     messages: [
-      { role: "user", content: DEFAULT_GENERATE_PROMPT },
+      { role: "user", content: prompt ?? DEFAULT_GENERATE_PROMPT },
       { role: "user", content: text },
     ],
     modalities: ["text", "audio"],
@@ -464,9 +465,10 @@ async function main(): Promise<void> {
     const voice = getStringOption(parsed.options, "voice") ?? "alloy";
     const format = (getStringOption(parsed.options, "format") ?? "pcm16").toLowerCase();
     const model = getStringOption(parsed.options, "model");
+    const prompt = getStringOption(parsed.options, "prompt");
     const dryRun = parsed.options["dry-run"] === true;
 
-    const result = await generateAudio(text, voice, format, model, dryRun);
+    const result = await generateAudio(text, voice, format, model, prompt, dryRun);
     process.stdout.write(`${JSON.stringify(result, null, 2)}\n`);
     return;
   }
