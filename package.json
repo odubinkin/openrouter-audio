@@ -5,6 +5,7 @@
   "description": "OpenRouter Audio OpenClaw skill CLI",
   "scripts": {
     "build": "node scripts/build.mjs",
+    "build:bin": "node scripts/build-bin.mjs",
     "clean": "rm -rf build"
   },
   "engines": {

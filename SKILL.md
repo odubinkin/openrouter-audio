@@ -30,10 +30,17 @@ npm run build
 
 Build output:
 
-- `build/openrouter-audio/openrouter-audio` (compiled CLI executable via bun)
+- `build/openrouter-audio/openrouter-audio.js` (JS CLI bundle)
+- `build/openrouter-audio/openrouter-audio` (bash wrapper for launching JS CLI)
 - `build/openrouter-audio/SKILL.md`
 
-No additional system dependencies are required to run the built CLI artifact.
+Optional native binary build:
+
+```bash
+npm run build:bin
+```
+
+This creates `build/openrouter-audio/openrouter-audio-bin` for the current OS/CPU only.
 
 ## Environment
 
