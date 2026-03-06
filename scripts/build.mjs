@@ -8,7 +8,7 @@ const outDir = path.join(root, "build", "openrouter-audio");
 const sourceCli = path.join(root, "src", "openrouter-audio.ts");
 const sourceSkill = path.join(root, "SKILL.md");
 const outJs = path.join(outDir, "openrouter-audio.js");
-const outWrapper = path.join(outDir, "openrouter-audio");
+const outWrapper = path.join(outDir, "openrouter.sh");
 const outSkill = path.join(outDir, "SKILL.md");
 
 if (!existsSync(sourceCli)) {

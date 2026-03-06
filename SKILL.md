@@ -28,7 +28,7 @@ This skill provides a small CLI for speech-to-text and text-to-speech through Op
 
 ## Core Behavior
 
-- Command path: `{baseDir}/openrouter-audio`
+- Command path: `{baseDir}/openrouter.sh`
 - Main commands: `transcribe`, `generate`
 - API key source: `OPENROUTER_API_KEY` only
 - `generate` output: system tmp by default, or explicit path via `--out`
@@ -46,7 +46,7 @@ Use defaults unless the user explicitly asks for overrides:
 Full utility description, including supported models and formats, is available in CLI help when needed:
 
 ```bash
-{baseDir}/openrouter-audio --help
+{baseDir}/openrouter.sh --help
 ```
 
 ## Prompt Behavior
@@ -62,16 +62,16 @@ Full utility description, including supported models and formats, is available i
 
 ```bash
 # Full help (models, formats, options)
-{baseDir}/openrouter-audio --help
+{baseDir}/openrouter.sh --help
 
 # Transcribe from a local file
-{baseDir}/openrouter-audio transcribe recording.wav
+{baseDir}/openrouter.sh transcribe recording.wav
 
 # Generate with defaults (recommended)
-{baseDir}/openrouter-audio generate "Hello world"
+{baseDir}/openrouter.sh generate "Hello world"
 
 # Generate to an explicit output path
-{baseDir}/openrouter-audio generate "Welcome" --out ./artifacts/welcome.mp3
+{baseDir}/openrouter.sh generate "Welcome" --out ./artifacts/welcome.mp3
 ```
 
 ## Output Behavior

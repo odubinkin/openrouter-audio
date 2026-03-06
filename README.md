@@ -37,10 +37,10 @@ npm run build
 Produces:
 
 - `build/openrouter-audio/openrouter-audio.js`
-- `build/openrouter-audio/openrouter-audio`
+- `build/openrouter-audio/openrouter.sh`
 - `build/openrouter-audio/SKILL.md`
 
-`openrouter-audio` is a bash wrapper that runs `node openrouter-audio.js`.
+`openrouter.sh` is a bash wrapper that runs `node openrouter-audio.js`.
 
 ### 2) Optional native binary build
 
@@ -59,13 +59,13 @@ Important: this binary is platform-specific (current OS + CPU architecture).
 ### Help
 
 ```bash
-build/openrouter-audio/openrouter-audio --help
+build/openrouter-audio/openrouter.sh --help
 ```
 
 ### Transcribe
 
 ```bash
-build/openrouter-audio/openrouter-audio transcribe <audio_file> [--format FORMAT] [--model MODEL] [--prompt PROMPT]
+build/openrouter-audio/openrouter.sh transcribe <audio_file> [--format FORMAT] [--model MODEL] [--prompt PROMPT]
 ```
 
 Audio-input models currently listed by OpenRouter:
@@ -93,13 +93,13 @@ These identifiers are embedded in the CLI help/model list for `transcribe`.
 Example:
 
 ```bash
-build/openrouter-audio/openrouter-audio transcribe ./samples/meeting.mp3 --prompt "Summarize key decisions" --model openrouter/auto
+build/openrouter-audio/openrouter.sh transcribe ./samples/meeting.mp3 --prompt "Summarize key decisions" --model openrouter/auto
 ```
 
 ### Generate
 
 ```bash
-build/openrouter-audio/openrouter-audio generate <text> [--voice VOICE] [--format FORMAT] [--model MODEL] [--prompt PROMPT] [--out PATH] [--dry-run]
+build/openrouter-audio/openrouter.sh generate <text> [--voice VOICE] [--format FORMAT] [--model MODEL] [--prompt PROMPT] [--out PATH] [--dry-run]
 ```
 
 Audio-output models currently listed by OpenRouter:
@@ -113,19 +113,19 @@ Examples:
 
 ```bash
 # default format mp3, streaming is implicit
-build/openrouter-audio/openrouter-audio generate "Hello from OpenClaw"
+build/openrouter-audio/openrouter.sh generate "Hello from OpenClaw"
 
 # explicit format and voice
-build/openrouter-audio/openrouter-audio generate "Welcome" --voice nova --format wav
+build/openrouter-audio/openrouter.sh generate "Welcome" --voice nova --format wav
 
 # explicit output path
-build/openrouter-audio/openrouter-audio generate "Welcome" --out ./artifacts/welcome.mp3
+build/openrouter-audio/openrouter.sh generate "Welcome" --out ./artifacts/welcome.mp3
 
 # override the default generation prompt
-build/openrouter-audio/openrouter-audio generate "Welcome" --prompt "Speak with a calm and clear narration style."
+build/openrouter-audio/openrouter.sh generate "Welcome" --prompt "Speak with a calm and clear narration style."
 
 # dry-run: no API call, only planned output path
-build/openrouter-audio/openrouter-audio generate "Test" --dry-run
+build/openrouter-audio/openrouter.sh generate "Test" --dry-run
 ```
 
 ## Defaults and Behavior
@@ -184,8 +184,8 @@ Install Node.js 20+ or run with a machine where Node is available.
 
 ```bash
 npm run build
-build/openrouter-audio/openrouter-audio --help
-build/openrouter-audio/openrouter-audio generate "smoke" --dry-run
+build/openrouter-audio/openrouter.sh --help
+build/openrouter-audio/openrouter.sh generate "smoke" --dry-run
 ```
 
 ## Testing

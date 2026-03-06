@@ -34,8 +34,8 @@ test("help prints usage and command overview", () => {
   const result = runCli(["--help"]);
   assert.equal(result.status, 0);
   assert.match(result.stdout, /Usage:/);
-  assert.match(result.stdout, /openrouter-audio transcribe/);
-  assert.match(result.stdout, /openrouter-audio generate/);
+  assert.match(result.stdout, /openrouter\.sh transcribe/);
+  assert.match(result.stdout, /openrouter\.sh generate/);
 });
 
 test("unknown command returns non-zero with clear error", () => {
