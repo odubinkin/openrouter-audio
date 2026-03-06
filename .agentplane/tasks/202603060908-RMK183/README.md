@@ -1,7 +1,8 @@
 ---
 id: "202603060908-RMK183"
 title: "Add --out path override for generate output files"
-status: "DOING"
+result_summary: "generate now supports --out for output file path."
+status: "DONE"
 priority: "med"
 owner: "CODER"
 depends_on: []
@@ -18,11 +19,16 @@ verification:
   updated_at: "2026-03-06T09:10:53.839Z"
   updated_by: "CODER"
   note: "Verify: npm run build passed; help now documents generate --out; dry-run without --out returns tmp path; dry-run with --out returns provided path; code path resolver handles multi-output suffixes and write loop always appends every target path to response JSON paths array."
-commit: null
+commit:
+  hash: "f83bca561a2cf9129bec3e9846b7d3c00a0d370b"
+  message: "🚧 RMK183 audio: add generate --out path override"
 comments:
   -
     author: "CODER"
     body: "Start: Adding generate --out output path override with deterministic multi-file naming, returning all file paths in CLI JSON, and updating docs/help."
+  -
+    author: "CODER"
+    body: "Verified: Added optional --out to generate, default tmp behavior remains, dry-run respects planned out path, and output JSON paths always contains all generated target file paths including suffixed names for additional files."
 events:
   -
     type: "status"
@@ -37,8 +43,15 @@ events:
     author: "CODER"
     state: "ok"
     note: "Verify: npm run build passed; help now documents generate --out; dry-run without --out returns tmp path; dry-run with --out returns provided path; code path resolver handles multi-output suffixes and write loop always appends every target path to response JSON paths array."
+  -
+    type: "status"
+    at: "2026-03-06T09:11:09.440Z"
+    author: "CODER"
+    from: "DOING"
+    to: "DONE"
+    note: "Verified: Added optional --out to generate, default tmp behavior remains, dry-run respects planned out path, and output JSON paths always contains all generated target file paths including suffixed names for additional files."
 doc_version: 2
-doc_updated_at: "2026-03-06T09:10:53.840Z"
+doc_updated_at: "2026-03-06T09:11:09.440Z"
 doc_updated_by: "CODER"
 description: "Add optional --out for generate to write output to a user path, keep tmp fallback, preserve multi-file handling with full paths list in CLI JSON response, and update help/docs/SKILL."
 id_source: "generated"
