@@ -1,7 +1,8 @@
 ---
 id: "202603061107-2A3YPP"
 title: "Adjust SKILL.md wording for help and prompt behavior"
-status: "DOING"
+result_summary: "Updated SKILL.md wording for help guidance and prompt behavior examples."
+status: "DONE"
 priority: "low"
 owner: "DOCS"
 depends_on: []
@@ -18,11 +19,16 @@ verification:
   updated_at: "2026-03-06T11:08:11.939Z"
   updated_by: "TESTER"
   note: "Wording updated as requested: removed strict hardcode/always language, clarified that full utility details are in --help when needed, and added concise default vs custom prompt behavior examples (summary and answer audio)."
-commit: null
+commit:
+  hash: "264aaa8e1742ce141f68ac36150330135d176d8f"
+  message: "📝 2A3YPP docs: refine SKILL.md help and prompt wording"
 comments:
   -
     author: "DOCS"
     body: "Start: adjust SKILL.md wording around help guidance and add concise default/custom prompt behavior notes."
+  -
+    author: "DOCS"
+    body: "Verified: unclear strict wording was replaced with softer phrasing, help guidance now states full utility description is available when needed, and prompt behavior now explains default direct STT/TTS plus custom summary/answer-audio examples."
 events:
   -
     type: "status"
@@ -37,9 +43,16 @@ events:
     author: "TESTER"
     state: "ok"
     note: "Wording updated as requested: removed strict hardcode/always language, clarified that full utility details are in --help when needed, and added concise default vs custom prompt behavior examples (summary and answer audio)."
+  -
+    type: "status"
+    at: "2026-03-06T11:08:28.307Z"
+    author: "DOCS"
+    from: "DOING"
+    to: "DONE"
+    note: "Verified: unclear strict wording was replaced with softer phrasing, help guidance now states full utility description is available when needed, and prompt behavior now explains default direct STT/TTS plus custom summary/answer-audio examples."
 doc_version: 2
-doc_updated_at: "2026-03-06T11:08:11.941Z"
-doc_updated_by: "TESTER"
+doc_updated_at: "2026-03-06T11:08:28.307Z"
+doc_updated_by: "DOCS"
 description: "Refine unclear wording in SKILL.md: replace strict 'always' guidance about help, remove hardcode warning phrasing, and add concise explanation of default vs custom prompt behavior with practical examples."
 id_source: "generated"
 ---
