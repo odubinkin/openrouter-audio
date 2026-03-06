@@ -1,7 +1,8 @@
 ---
 id: "202603060817-BSNVYS"
 title: "Add --format usage details to SKILL.md"
-status: "DOING"
+result_summary: "SKILL.md now contains concise --format usage guidance for transcribe and generate."
+status: "DONE"
 priority: "low"
 owner: "CODER"
 depends_on: []
@@ -18,11 +19,16 @@ verification:
   updated_at: "2026-03-06T08:18:37.049Z"
   updated_by: "CODER"
   note: "Verified SKILL.md now documents --format usage for both transcribe and generate, including defaults and supported formats aligned with source implementation."
-commit: null
+commit:
+  hash: "26d6685fd796a79554f089e6b708253599e6396b"
+  message: "📝 BSNVYS docs: add --format guidance to SKILL"
 comments:
   -
     author: "CODER"
     body: "Start: updating SKILL.md to add explicit --format usage details for transcribe and generate while preserving user's shortened style."
+  -
+    author: "CODER"
+    body: "Verified: added a dedicated --format section to SKILL.md with behavior, defaults, and supported format values matching current CLI implementation."
 events:
   -
     type: "status"
@@ -37,8 +43,15 @@ events:
     author: "CODER"
     state: "ok"
     note: "Verified SKILL.md now documents --format usage for both transcribe and generate, including defaults and supported formats aligned with source implementation."
+  -
+    type: "status"
+    at: "2026-03-06T08:18:56.229Z"
+    author: "CODER"
+    from: "DOING"
+    to: "DONE"
+    note: "Verified: added a dedicated --format section to SKILL.md with behavior, defaults, and supported format values matching current CLI implementation."
 doc_version: 2
-doc_updated_at: "2026-03-06T08:18:37.050Z"
+doc_updated_at: "2026-03-06T08:18:56.229Z"
 doc_updated_by: "CODER"
 description: "Add concise documentation in SKILL.md describing how --format works for transcribe and generate."
 id_source: "generated"
