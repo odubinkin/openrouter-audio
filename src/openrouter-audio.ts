@@ -75,7 +75,7 @@ Environment:
 Notes:
   - API key is only read from OPENROUTER_API_KEY
   - generate saves output audio to system tmp and returns path(s)
-  - --format defaults to mp3
+  - --format defaults to pcm16
   - generate always uses stream=true for audio output
 
 ${formatModelList("Transcribe models (OpenRouter audio input)", TRANSCRIBE_MODELS)}
@@ -456,7 +456,7 @@ async function main(): Promise<void> {
     }
 
     const voice = getStringOption(parsed.options, "voice") ?? "alloy";
-    const format = (getStringOption(parsed.options, "format") ?? "mp3").toLowerCase();
+    const format = (getStringOption(parsed.options, "format") ?? "pcm16").toLowerCase();
     const model = getStringOption(parsed.options, "model");
     const dryRun = parsed.options["dry-run"] === true;
 

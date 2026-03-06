@@ -32,7 +32,7 @@ This skill provides audio transcription (speech-to-text) and audio generation (t
 
 - Transcription model: `openrouter/auto`
 - Generation model: `openai/gpt-audio-mini`
-- Generation format: `mp3`
+- Generation format: `pcm16`
 - Generation requests always use `stream: true`
 
 ## Build
@@ -81,7 +81,7 @@ build/openrouter-audio/openrouter-audio transcribe recording.wav
 # Transcribe with custom prompt/model
 build/openrouter-audio/openrouter-audio transcribe meeting.mp3 --prompt "Summarize the call" --model openrouter/auto
 
-# Generate with defaults (format=mp3, streaming is implicit)
+# Generate with defaults (format=pcm16, streaming is implicit)
 build/openrouter-audio/openrouter-audio generate "Hello world"
 
 # Generate with explicit options and model override

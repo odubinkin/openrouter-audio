@@ -112,7 +112,7 @@ These identifiers were taken from the OpenRouter audio model catalog on 2026-03-
 Examples:
 
 ```bash
-# default format mp3, streaming is implicit
+# default format pcm16, streaming is implicit
 build/openrouter-audio/openrouter-audio generate "Hello from OpenClaw"
 
 # explicit format and voice
@@ -128,7 +128,7 @@ build/openrouter-audio/openrouter-audio generate "Test" --dry-run
 - Model override: `--model` is supported for both `transcribe` and `generate`
 - Default transcribe model: `openrouter/auto`
 - Default generate model: `openai/gpt-audio-mini`
-- Default generate format: `mp3`
+- Default generate format: `pcm16`
 - Generate requests always use `stream: true`
 - Generated audio output location: system temporary directory (`tmp`)
 - `generate` output: JSON with `paths`, `transcript`, `format`
