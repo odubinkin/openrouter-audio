@@ -1,7 +1,8 @@
 ---
 id: "202603060745-W3XXB1"
 title: "Add explicit transcribe format override"
-status: "DOING"
+result_summary: "Transcribe now accepts explicit --format with validation and fallback autodetect when omitted."
+status: "DONE"
 priority: "med"
 owner: "CODER"
 depends_on: []
@@ -18,11 +19,16 @@ verification:
   updated_at: "2026-03-06T07:47:50.711Z"
   updated_by: "CODER"
   note: "npm run build passed; help output now lists transcribe with [--format FORMAT]; built artifact contains resolveInputAudioFormat validation and transcribeAudio(audioFile, model, prompt, format)."
-commit: null
+commit:
+  hash: "38784783faeac810a6e008b1ec86adcd86a132a1"
+  message: "🚧 W3XXB1 code: add transcribe format override"
 comments:
   -
     author: "CODER"
     body: "Start: Implement transcribe --format override with strict input-format validation, update help/docs, then run build and smoke verification before commit."
+  -
+    author: "CODER"
+    body: "Verified: Added transcribe --format override with precedence over auto-detection, validated explicit input formats, updated README/help, and passed build plus smoke checks for generated CLI usage and artifact wiring."
 events:
   -
     type: "status"
@@ -37,8 +43,15 @@ events:
     author: "CODER"
     state: "ok"
     note: "npm run build passed; help output now lists transcribe with [--format FORMAT]; built artifact contains resolveInputAudioFormat validation and transcribeAudio(audioFile, model, prompt, format)."
+  -
+    type: "status"
+    at: "2026-03-06T07:48:47.167Z"
+    author: "CODER"
+    from: "DOING"
+    to: "DONE"
+    note: "Verified: Added transcribe --format override with precedence over auto-detection, validated explicit input formats, updated README/help, and passed build plus smoke checks for generated CLI usage and artifact wiring."
 doc_version: 2
-doc_updated_at: "2026-03-06T07:47:57.905Z"
+doc_updated_at: "2026-03-06T07:48:47.167Z"
 doc_updated_by: "CODER"
 description: "Support --format for transcribe: if provided, use it; otherwise auto-detect from input file extension with existing fallback."
 id_source: "generated"
