@@ -99,7 +99,7 @@ build/openrouter-audio/openrouter-audio transcribe ./samples/meeting.mp3 --promp
 ### Generate
 
 ```bash
-build/openrouter-audio/openrouter-audio generate <text> [--voice VOICE] [--format FORMAT] [--model MODEL] [--prompt PROMPT] [--dry-run]
+build/openrouter-audio/openrouter-audio generate <text> [--voice VOICE] [--format FORMAT] [--model MODEL] [--prompt PROMPT] [--out PATH] [--dry-run]
 ```
 
 Audio-output models currently listed by OpenRouter:
@@ -117,6 +117,9 @@ build/openrouter-audio/openrouter-audio generate "Hello from OpenClaw"
 
 # explicit format and voice
 build/openrouter-audio/openrouter-audio generate "Welcome" --voice nova --format wav
+
+# explicit output path
+build/openrouter-audio/openrouter-audio generate "Welcome" --out ./artifacts/welcome.mp3
 
 # override the default generation prompt
 build/openrouter-audio/openrouter-audio generate "Welcome" --prompt "Speak with a calm and clear narration style."
@@ -137,9 +140,10 @@ build/openrouter-audio/openrouter-audio generate "Test" --dry-run
 - Generate API request format is always `pcm16` for compatibility; local conversion is applied for `mp3`, `ogg`, and `wav`
 - Generate requests always use `stream: true`
 - Generate default prompt text: `Generate audio that speaks exactly the user's content.`
-- Generated audio output location: system temporary directory (`tmp`)
+- Generated audio output location: system temporary directory (`tmp`) by default, or `--out PATH` when provided
+- If generate returns multiple audio payloads and `--out` is used, additional files are created with numeric suffixes (`-2`, `-3`, ...)
 - `generate` output: JSON with `paths`, `transcript`, `format`
-- `generate --dry-run`: skips API call and returns planned tmp path(s)
+- `generate --dry-run`: skips API call and returns planned output path(s)
 
 ## Supported Values
 

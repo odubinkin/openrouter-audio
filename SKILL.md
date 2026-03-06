@@ -1,6 +1,6 @@
 ---
 name: openrouter-audio
-description: Audio transcription and text-to-speech generation using OpenRouter API. Use when the user needs to transcribe audio files to text or generate speech/audio from text. Supports multiple audio formats for input and output, reads API key from environment, and writes generated audio into system tmp.
+description: Audio transcription and text-to-speech generation using OpenRouter API. Use when the user needs to transcribe audio files to text or generate speech/audio from text. Supports multiple audio formats for input and output, reads API key from environment, and writes generated audio to system tmp or an explicit output path.
 ---
 
 # OpenRouter Audio
@@ -24,7 +24,7 @@ This skill provides audio transcription (speech-to-text) and audio generation (t
 ### Audio Generation (TTS)
 - Voices: alloy, echo, fable, onyx, nova, shimmer
 - Output formats: wav, mp3, ogg, pcm16
-- Generated files are saved to the system tmp directory
+- Generated files are saved to system tmp by default, or to `--out` path when provided
 - Returns JSON including generated path(s)
 - Model override support (`--model`)
 - Available audio-output models are shown in `--help`
@@ -43,6 +43,7 @@ This skill provides audio transcription (speech-to-text) and audio generation (t
 
 - `transcribe`: `--format` sets the input audio format explicitly (otherwise it is inferred from file extension).
 - `generate`: `--format` sets the output audio format (default: `mp3`).
+- `generate`: `--out` sets the output file path explicitly.
 - Transcribe supported input formats: `wav`, `mp3`, `aiff`, `aac`, `ogg`, `flac`, `m4a`, `pcm16`, `pcm24`.
 - Generate supported output formats: `wav`, `mp3`, `ogg`, `pcm16`.
 
@@ -63,6 +64,9 @@ This skill provides audio transcription (speech-to-text) and audio generation (t
 
 # Generate with explicit options and model override
 ./openrouter-audio generate "Welcome" --voice nova --format wav --model openai/gpt-audio-mini
+
+# Generate to a specific file path
+./openrouter-audio generate "Welcome" --out ./artifacts/welcome.mp3
 
 # Generate with custom prompt override
 ./openrouter-audio generate "Welcome" --prompt "Speak the exact message text with a calm and clear narration style."

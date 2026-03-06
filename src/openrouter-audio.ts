@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 import { existsSync, readFileSync, writeFileSync } from "node:fs";
-import { extname } from "node:path";
+import { extname, parse as parsePath, resolve as resolvePath } from "node:path";
 import os from "node:os";
 import { createMp3Encoder, createOggEncoder } from "wasm-media-encoders";
 
@@ -74,7 +74,7 @@ function usage(): string {
 
 Usage:
   openrouter-audio transcribe <audio_file> [--format FORMAT] [--model MODEL] [--prompt PROMPT]
-  openrouter-audio generate <text> [--voice VOICE] [--format FORMAT] [--model MODEL] [--prompt PROMPT] [--dry-run]
+  openrouter-audio generate <text> [--voice VOICE] [--format FORMAT] [--model MODEL] [--prompt PROMPT] [--out PATH] [--dry-run]
   openrouter-audio --help
 
 Model option:
@@ -87,10 +87,11 @@ Environment:
 Notes:
   - API key is only read from OPENROUTER_API_KEY
   - transcribe infers input format from file extension unless --format is set
-  - generate saves output audio to system tmp and returns path(s)
+  - generate saves output audio to tmp by default and returns path(s)
   - generate default voice is alloy
   - --format defaults to ${DEFAULT_GENERATE_FORMAT}
-  - --dry-run skips API call and returns planned tmp output path(s)
+  - --out writes generated file(s) to your path instead of tmp (additional files use numeric suffixes)
+  - --dry-run skips API call and returns planned output path(s)
   - generate always requests pcm16 from API and converts locally for other output formats
   - generate always uses stream=true for audio output
 
@@ -459,10 +460,36 @@ async function convertPcm16ToFormat(pcm16Bytes: Buffer, format: string): Promise
   die(`Error: Unsupported format '${format}'. Use: ${Array.from(SUPPORTED_OUTPUT_FORMATS).join(", ")}`);
 }
 
-async function writeAudioPayloadsToTmp(
+function resolveOutputPaths(format: string, count: number, outPath?: string): string[] {
+  if (!outPath) {
+    const paths: string[] = [];
+    for (let i = 0; i < count; i += 1) {
+      paths.push(newTmpAudioPath(format, i));
+    }
+    return paths;
+  }
+
+  const resolved = resolvePath(outPath);
+  if (count <= 1) {
+    return [resolved];
+  }
+
+  const parsed = parsePath(resolved);
+  const paths = [resolved];
+  for (let i = 1; i < count; i += 1) {
+    const suffix = `-${i + 1}`;
+    const candidate = `${parsed.name}${suffix}${parsed.ext}`;
+    paths.push(resolvePath(parsed.dir, candidate));
+  }
+  return paths;
+}
+
+async function writeAudioPayloads(
   payloads: AudioPayload[],
   requestedFormat: string,
+  outPath?: string,
 ): Promise<{ paths: string[]; transcript: string }> {
+  const resolvedPaths = resolveOutputPaths(requestedFormat, payloads.length, outPath);
   const paths: string[] = [];
   const transcriptParts: string[] = [];
 
@@ -470,9 +497,9 @@ async function writeAudioPayloadsToTmp(
     const payload = payloads[i];
     const pcm16Bytes = Buffer.from(payload.data, "base64");
     const convertedBytes = await convertPcm16ToFormat(pcm16Bytes, requestedFormat);
-    const outPath = newTmpAudioPath(requestedFormat, i);
-    writeFileSync(outPath, convertedBytes);
-    paths.push(outPath);
+    const targetPath = resolvedPaths[i];
+    writeFileSync(targetPath, convertedBytes);
+    paths.push(targetPath);
     if (payload.transcript) {
       transcriptParts.push(payload.transcript);
     }
@@ -490,6 +517,7 @@ async function generateAudio(
   format: string,
   model?: string,
   prompt?: string,
+  outPath?: string,
   dryRun = false,
 ): Promise<{ paths: string[]; transcript: string; format: string }> {
   if (!SUPPORTED_VOICES.has(voice)) {
@@ -502,7 +530,7 @@ async function generateAudio(
 
   if (dryRun) {
     return {
-      paths: [newTmpAudioPath(format, 0)],
+      paths: resolveOutputPaths(format, 1, outPath),
       transcript: "",
       format,
     };
@@ -546,7 +574,7 @@ async function generateAudio(
     die("Error: No audio data received from API.");
   }
 
-  const result = await writeAudioPayloadsToTmp(payloads, format);
+  const result = await writeAudioPayloads(payloads, format, outPath);
   return {
     paths: result.paths,
     transcript: result.transcript,
@@ -587,9 +615,10 @@ async function main(): Promise<void> {
     const format = (getStringOption(parsed.options, "format") ?? DEFAULT_GENERATE_FORMAT).toLowerCase();
     const model = getStringOption(parsed.options, "model");
     const prompt = getStringOption(parsed.options, "prompt");
+    const outPath = getStringOption(parsed.options, "out");
     const dryRun = parsed.options["dry-run"] === true;
 
-    const result = await generateAudio(text, voice, format, model, prompt, dryRun);
+    const result = await generateAudio(text, voice, format, model, prompt, outPath, dryRun);
     process.stdout.write(`${JSON.stringify(result, null, 2)}\n`);
     return;
   }
