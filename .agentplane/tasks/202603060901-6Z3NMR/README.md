@@ -1,7 +1,8 @@
 ---
 id: "202603060901-6Z3NMR"
 title: "Make app.simpleclaw.ru clickable in README"
-status: "DOING"
+result_summary: "README now contains clickable app.simpleclaw.ru link."
+status: "DONE"
 priority: "low"
 owner: "CODER"
 depends_on: []
@@ -18,11 +19,16 @@ verification:
   updated_at: "2026-03-06T09:01:57.597Z"
   updated_by: "CODER"
   note: "Verify: README domain mention is now a markdown link to https://app.simpleclaw.ru and git diff shows only that one-line documentation change."
-commit: null
+commit:
+  hash: "a01c2050bb63684f406ffeb066cd3377744696ed"
+  message: "✅ 6Z3NMR docs: link app.simpleclaw.ru in README"
 comments:
   -
     author: "CODER"
     body: "Start: Applying a minimal README documentation edit so app.simpleclaw.ru is a clickable markdown link."
+  -
+    author: "CODER"
+    body: "Verified: Replaced plain app.simpleclaw.ru text with markdown link https://app.simpleclaw.ru in README, confirmed by grep and single-line git diff."
 events:
   -
     type: "status"
@@ -37,8 +43,15 @@ events:
     author: "CODER"
     state: "ok"
     note: "Verify: README domain mention is now a markdown link to https://app.simpleclaw.ru and git diff shows only that one-line documentation change."
+  -
+    type: "status"
+    at: "2026-03-06T09:02:15.524Z"
+    author: "CODER"
+    from: "DOING"
+    to: "DONE"
+    note: "Verified: Replaced plain app.simpleclaw.ru text with markdown link https://app.simpleclaw.ru in README, confirmed by grep and single-line git diff."
 doc_version: 2
-doc_updated_at: "2026-03-06T09:01:57.598Z"
+doc_updated_at: "2026-03-06T09:02:15.524Z"
 doc_updated_by: "CODER"
 description: "Replace plain app.simpleclaw.ru mention in README with a markdown link."
 id_source: "generated"
