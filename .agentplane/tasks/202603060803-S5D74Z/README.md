@@ -1,7 +1,8 @@
 ---
 id: "202603060803-S5D74Z"
 title: "Trim SKILL.md dry-run details and rewrite CLI paths"
-status: "DOING"
+result_summary: "SKILL.md no longer includes dry-run and now uses ./openrouter-audio paths."
+status: "DONE"
 priority: "low"
 owner: "CODER"
 depends_on: []
@@ -18,11 +19,16 @@ verification:
   updated_at: "2026-03-06T08:05:45.880Z"
   updated_by: "CODER"
   note: "Verified SKILL.md cleanup: removed dry-run references and replaced build/openrouter-audio/ path prefix with ./openrouter-audio; grep check returned no matches."
-commit: null
+commit:
+  hash: "5c87e11ffb098c8275a46c54a69c5d9dc1d6cced"
+  message: "📝 S5D74Z docs: trim SKILL dry-run and rewrite paths"
 comments:
   -
     author: "CODER"
     body: "Start: applying user-requested SKILL.md cleanup by removing dry-run details and replacing build/openrouter-audio/ path prefixes with ./openrouter-audio examples."
+  -
+    author: "CODER"
+    body: "Verified: SKILL.md updated per request; all dry-run references removed and legacy build/openrouter-audio/ path prefix replaced with ./openrouter-audio."
 events:
   -
     type: "status"
@@ -37,8 +43,15 @@ events:
     author: "CODER"
     state: "ok"
     note: "Verified SKILL.md cleanup: removed dry-run references and replaced build/openrouter-audio/ path prefix with ./openrouter-audio; grep check returned no matches."
+  -
+    type: "status"
+    at: "2026-03-06T08:06:02.930Z"
+    author: "CODER"
+    from: "DOING"
+    to: "DONE"
+    note: "Verified: SKILL.md updated per request; all dry-run references removed and legacy build/openrouter-audio/ path prefix replaced with ./openrouter-audio."
 doc_version: 2
-doc_updated_at: "2026-03-06T08:05:45.881Z"
+doc_updated_at: "2026-03-06T08:06:02.930Z"
 doc_updated_by: "CODER"
 description: "Remove dry-run mentions from SKILL.md and replace build/openrouter-audio/ paths with ./openrouter-audio."
 id_source: "generated"
