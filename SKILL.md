@@ -1,84 +1,101 @@
 ---
 name: openrouter-audio
-description: Audio transcription and text-to-speech generation using OpenRouter API. Use when the user needs to transcribe audio files to text or generate speech/audio from text. Supports multiple audio formats for input (wav, mp3, flac, etc.) and output (wav, mp3, opus, etc.). Includes multiple voice options for TTS.
+description: Audio transcription and text-to-speech generation using OpenRouter API. Use when the user needs to transcribe audio files to text or generate speech/audio from text. Supports multiple audio formats for input and output, reads API key from environment, and writes generated audio into system tmp.
 ---
 
 # OpenRouter Audio
 
 This skill provides audio transcription (speech-to-text) and audio generation (text-to-speech) capabilities using OpenRouter's multimodal API.
 
+## What This Skill Provides
+
+- A CLI utility with two commands: `transcribe` and `generate`
+- OpenRouter API integration using `OPENROUTER_API_KEY`
+- Build artifacts suitable for OpenClaw skill packaging in `build/openrouter-audio/`
+
 ## Capabilities
 
-### Audio Input (Transcription)
-- Transcribe audio files to text
-- Support for formats: wav, mp3, aiff, aac, ogg, flac, m4a, pcm16, pcm24
-- Custom prompts for specific transcription needs (summarization, translation, etc.)
+### Transcription
+- Input formats: wav, mp3, aiff, aac, ogg, flac, m4a, pcm16, pcm24
+- Custom prompt support (`--prompt`)
+- Model override support (`--model`)
 
-### Audio Output (TTS)
-- Generate speech from text
-- Multiple voices: alloy, echo, fable, onyx, nova, shimmer
+### Audio Generation (TTS)
+- Voices: alloy, echo, fable, onyx, nova, shimmer
 - Output formats: wav, mp3, flac, opus, pcm16
-- Output files are always written into the default system temporary directory
-
-## Build and Artifacts
-
-Build the skill package:
-
-```bash
-npm run build
-```
-
-Build output:
-
-- `build/openrouter-audio/openrouter-audio.js` (JS CLI bundle)
-- `build/openrouter-audio/openrouter-audio` (bash wrapper for launching JS CLI)
-- `build/openrouter-audio/SKILL.md`
-
-Optional native binary build:
-
-```bash
-npm run build:bin
-```
-
-This creates `build/openrouter-audio/openrouter-audio-bin` for the current OS/CPU only.
-
-## Environment
-
-Set your OpenRouter API key:
-
-```bash
-export OPENROUTER_API_KEY="your-api-key"
-```
-
-The CLI reads API key only from `OPENROUTER_API_KEY`.
-
-## CLI Usage
-
-```bash
-# Help
-build/openrouter-audio/openrouter-audio --help
-
-# Transcribe audio
-build/openrouter-audio/openrouter-audio transcribe recording.wav
-
-# Transcribe with custom prompt
-build/openrouter-audio/openrouter-audio transcribe meeting.mp3 --prompt "Summarize this meeting"
-
-# Generate audio (saved to system tmp, returns path)
-build/openrouter-audio/openrouter-audio generate "Hello world"
-
-# Generate with custom voice/format
-build/openrouter-audio/openrouter-audio generate "Welcome" --voice nova --format wav
-```
+- Generated files are saved to the system tmp directory
+- Returns JSON including generated path(s)
 
 ## Defaults
 
 - Transcription model: `google/gemini-2.5-flash`
 - Generation model: `openai/gpt-4o-audio-preview`
-- Generate `--format`: `mp3`
-- Generate `--stream`: `false`
+- Generation format: `mp3`
+- Generation stream: `false`
+
+## Build
+
+Build JS CLI artifacts:
+
+```bash
+npm run build
+```
+
+Output:
+
+- `build/openrouter-audio/openrouter-audio.js` (JS CLI bundle)
+- `build/openrouter-audio/openrouter-audio` (bash wrapper launcher)
+- `build/openrouter-audio/SKILL.md`
+
+Optional native binary build for current OS/CPU:
+
+```bash
+npm run build:bin
+```
+
+Output:
+
+- `build/openrouter-audio/openrouter-audio-bin`
+
+## Environment
+
+Set API key before running commands:
+
+```bash
+export OPENROUTER_API_KEY="your-api-key"
+```
+
+No CLI option exists for API key input.
+
+## Usage
+
+```bash
+# Help
+build/openrouter-audio/openrouter-audio --help
+
+# Transcribe
+build/openrouter-audio/openrouter-audio transcribe recording.wav
+
+# Transcribe with custom prompt/model
+build/openrouter-audio/openrouter-audio transcribe meeting.mp3 --prompt "Summarize the call" --model google/gemini-2.5-flash
+
+# Generate with defaults (format=mp3, stream=false)
+build/openrouter-audio/openrouter-audio generate "Hello world"
+
+# Generate with explicit options
+build/openrouter-audio/openrouter-audio generate "Welcome" --voice nova --format wav --stream false
+```
+
+## Output Behavior
+
+- `transcribe` prints transcription text to stdout.
+- `generate` prints JSON with fields:
+  - `paths`: generated file path array in system tmp
+  - `transcript`: transcript text (if provided by API)
+  - `stream`: effective stream mode
+  - `format`: effective output format
 
 ## Notes
 
-- The generate command returns JSON with generated file path(s) in tmp.
-- For very large inputs, split text/audio into smaller chunks if needed.
+- `--dry-run` is supported for `generate` and returns expected tmp output path(s) without API call.
+- If required env var is missing, the CLI exits with an error.
