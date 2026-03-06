@@ -1,7 +1,8 @@
 ---
 id: "202603060808-0XGX06"
 title: "Remove build-process mentions from SKILL.md"
-status: "DOING"
+result_summary: "SKILL.md no longer contains build-process/build-artifact guidance."
+status: "DONE"
 priority: "low"
 owner: "CODER"
 depends_on: []
@@ -18,11 +19,16 @@ verification:
   updated_at: "2026-03-06T08:09:15.224Z"
   updated_by: "CODER"
   note: "Verified SKILL.md no longer contains build-process instructions; Build section removed and file is runtime-only for prebuilt CLI usage."
-commit: null
+commit:
+  hash: "da064f56a689bd801da5883faabbfc5a4334f70e"
+  message: "📝 0XGX06 docs: remove SKILL build-process mentions"
 comments:
   -
     author: "CODER"
     body: "Start: removing build-process/build-artifact mentions from SKILL.md and preserving runtime-only usage guidance for prebuilt CLI."
+  -
+    author: "CODER"
+    body: "Verified: removed Build section and build-process wording from SKILL.md; document now describes runtime usage of prebuilt CLI only."
 events:
   -
     type: "status"
@@ -37,8 +43,15 @@ events:
     author: "CODER"
     state: "ok"
     note: "Verified SKILL.md no longer contains build-process instructions; Build section removed and file is runtime-only for prebuilt CLI usage."
+  -
+    type: "status"
+    at: "2026-03-06T08:09:30.683Z"
+    author: "CODER"
+    from: "DOING"
+    to: "DONE"
+    note: "Verified: removed Build section and build-process wording from SKILL.md; document now describes runtime usage of prebuilt CLI only."
 doc_version: 2
-doc_updated_at: "2026-03-06T08:09:15.225Z"
+doc_updated_at: "2026-03-06T08:09:30.683Z"
 doc_updated_by: "CODER"
 description: "Strip build-process and build artifact references from SKILL.md; keep runtime-only guidance for prebuilt skill usage."
 id_source: "generated"
