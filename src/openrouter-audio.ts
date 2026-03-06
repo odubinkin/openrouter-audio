@@ -62,7 +62,7 @@ function usage(): string {
 
 Usage:
   openrouter-audio transcribe <audio_file> [--model MODEL] [--prompt PROMPT]
-  openrouter-audio generate <text> [--voice VOICE] [--format FORMAT] [--model MODEL] [--stream true|false]
+  openrouter-audio generate <text> [--voice VOICE] [--format FORMAT] [--model MODEL]
   openrouter-audio --help
 
 Model option:
@@ -76,7 +76,7 @@ Notes:
   - API key is only read from OPENROUTER_API_KEY
   - generate saves output audio to system tmp and returns path(s)
   - --format defaults to mp3
-  - --stream defaults to false
+  - generate always uses stream=true for audio output
 
 ${formatModelList("Transcribe models (OpenRouter audio input)", TRANSCRIBE_MODELS)}
 
@@ -133,28 +133,6 @@ function parseArgs(argv: string[]): ParsedArgs {
 function getStringOption(options: Record<string, string | boolean>, key: string): string | undefined {
   const value = options[key];
   return typeof value === "string" ? value : undefined;
-}
-
-function getBooleanOption(
-  options: Record<string, string | boolean>,
-  key: string,
-  fallback: boolean,
-): boolean {
-  const value = options[key];
-  if (typeof value === "boolean") {
-    return value;
-  }
-  if (typeof value !== "string") {
-    return fallback;
-  }
-  const normalized = value.toLowerCase();
-  if (normalized === "true" || normalized === "1" || normalized === "yes") {
-    return true;
-  }
-  if (normalized === "false" || normalized === "0" || normalized === "no") {
-    return false;
-  }
-  die(`Error: Invalid boolean value for --${key}: ${value}`);
 }
 
 function getApiKey(): string {
@@ -390,9 +368,8 @@ async function generateAudio(
   voice: string,
   format: string,
   model?: string,
-  stream = false,
   dryRun = false,
-): Promise<{ paths: string[]; transcript: string; stream: boolean; format: string }> {
+): Promise<{ paths: string[]; transcript: string; format: string }> {
   if (!SUPPORTED_VOICES.has(voice)) {
     die(`Error: Unsupported voice '${voice}'. Use: ${Array.from(SUPPORTED_VOICES).join(", ")}`);
   }
@@ -405,7 +382,6 @@ async function generateAudio(
     return {
       paths: [newTmpAudioPath(format, 0)],
       transcript: "",
-      stream,
       format,
     };
   }
@@ -420,7 +396,7 @@ async function generateAudio(
       voice,
       format,
     },
-    stream,
+    stream: true,
   };
 
   const response = await fetch(OPENROUTER_API_URL, {
@@ -437,9 +413,7 @@ async function generateAudio(
     die(`Error: API request failed (${response.status}): ${body}`);
   }
 
-  const payloads = stream
-    ? await readSseAudioPayloads(response)
-    : collectAudioPayloadsFromJson(await response.json());
+  const payloads = await readSseAudioPayloads(response);
 
   if (!payloads.length) {
     die("Error: No audio data received from API.");
@@ -449,7 +423,6 @@ async function generateAudio(
   return {
     paths: result.paths,
     transcript: result.transcript,
-    stream,
     format,
   };
 }
@@ -485,10 +458,9 @@ async function main(): Promise<void> {
     const voice = getStringOption(parsed.options, "voice") ?? "alloy";
     const format = (getStringOption(parsed.options, "format") ?? "mp3").toLowerCase();
     const model = getStringOption(parsed.options, "model");
-    const stream = getBooleanOption(parsed.options, "stream", false);
-    const dryRun = getBooleanOption(parsed.options, "dry-run", false);
+    const dryRun = parsed.options["dry-run"] === true;
 
-    const result = await generateAudio(text, voice, format, model, stream, dryRun);
+    const result = await generateAudio(text, voice, format, model, dryRun);
     process.stdout.write(`${JSON.stringify(result, null, 2)}\n`);
     return;
   }

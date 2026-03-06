@@ -33,7 +33,7 @@ This skill provides audio transcription (speech-to-text) and audio generation (t
 - Transcription model: `openrouter/auto`
 - Generation model: `openai/gpt-audio-mini`
 - Generation format: `mp3`
-- Generation stream: `false`
+- Generation requests always use `stream: true`
 
 ## Build
 
@@ -81,11 +81,11 @@ build/openrouter-audio/openrouter-audio transcribe recording.wav
 # Transcribe with custom prompt/model
 build/openrouter-audio/openrouter-audio transcribe meeting.mp3 --prompt "Summarize the call" --model openrouter/auto
 
-# Generate with defaults (format=mp3, stream=false)
+# Generate with defaults (format=mp3, streaming is implicit)
 build/openrouter-audio/openrouter-audio generate "Hello world"
 
 # Generate with explicit options and model override
-build/openrouter-audio/openrouter-audio generate "Welcome" --voice nova --format wav --stream false --model openai/gpt-audio-mini
+build/openrouter-audio/openrouter-audio generate "Welcome" --voice nova --format wav --model openai/gpt-audio-mini
 ```
 
 ## Output Behavior
@@ -94,7 +94,6 @@ build/openrouter-audio/openrouter-audio generate "Welcome" --voice nova --format
 - `generate` prints JSON with fields:
   - `paths`: generated file path array in system tmp
   - `transcript`: transcript text (if provided by API)
-  - `stream`: effective stream mode
   - `format`: effective output format
 
 ## Notes

@@ -99,7 +99,7 @@ build/openrouter-audio/openrouter-audio transcribe ./samples/meeting.mp3 --promp
 ### Generate
 
 ```bash
-build/openrouter-audio/openrouter-audio generate <text> [--voice VOICE] [--format FORMAT] [--model MODEL] [--stream true|false] [--dry-run]
+build/openrouter-audio/openrouter-audio generate <text> [--voice VOICE] [--format FORMAT] [--model MODEL] [--dry-run]
 ```
 
 Audio-output models currently listed by OpenRouter:
@@ -112,7 +112,7 @@ These identifiers were taken from the OpenRouter audio model catalog on 2026-03-
 Examples:
 
 ```bash
-# default format mp3, stream false
+# default format mp3, streaming is implicit
 build/openrouter-audio/openrouter-audio generate "Hello from OpenClaw"
 
 # explicit format and voice
@@ -129,9 +129,9 @@ build/openrouter-audio/openrouter-audio generate "Test" --dry-run
 - Default transcribe model: `openrouter/auto`
 - Default generate model: `openai/gpt-audio-mini`
 - Default generate format: `mp3`
-- Default generate stream mode: `false`
+- Generate requests always use `stream: true`
 - Generated audio output location: system temporary directory (`tmp`)
-- `generate` output: JSON with `paths`, `transcript`, `stream`, `format`
+- `generate` output: JSON with `paths`, `transcript`, `format`
 
 ## Supported Values
 
@@ -160,7 +160,6 @@ export OPENROUTER_API_KEY="your-api-key"
 ### `No audio data received from API`
 
 - Verify model/voice/format combination
-- Retry with `--stream false` (default)
 - Check upstream API response/body for provider-side issues
 
 ### Wrapper fails with `node: command not found`
