@@ -4,8 +4,8 @@ import { extname } from "node:path";
 import os from "node:os";
 
 const OPENROUTER_API_URL = "https://openrouter.ai/api/v1/chat/completions";
-const DEFAULT_TRANSCRIBE_MODEL = "google/gemini-2.5-flash";
-const DEFAULT_GENERATE_MODEL = "openai/gpt-4o-audio-preview";
+const DEFAULT_TRANSCRIBE_MODEL = "openrouter/auto";
+const DEFAULT_GENERATE_MODEL = "openai/gpt-audio-mini";
 const TRANSCRIBE_MODELS = [
   "google/gemini-2.0-flash-001",
   "google/gemini-2.0-flash-lite-001",

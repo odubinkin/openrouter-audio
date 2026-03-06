@@ -93,7 +93,7 @@ These identifiers were taken from the OpenRouter audio model catalog on 2026-03-
 Example:
 
 ```bash
-build/openrouter-audio/openrouter-audio transcribe ./samples/meeting.mp3 --prompt "Summarize key decisions"
+build/openrouter-audio/openrouter-audio transcribe ./samples/meeting.mp3 --prompt "Summarize key decisions" --model openrouter/auto
 ```
 
 ### Generate
@@ -126,6 +126,8 @@ build/openrouter-audio/openrouter-audio generate "Test" --dry-run
 
 - API key source: `OPENROUTER_API_KEY` only
 - Model override: `--model` is supported for both `transcribe` and `generate`
+- Default transcribe model: `openrouter/auto`
+- Default generate model: `openai/gpt-audio-mini`
 - Default generate format: `mp3`
 - Default generate stream mode: `false`
 - Generated audio output location: system temporary directory (`tmp`)

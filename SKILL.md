@@ -30,8 +30,8 @@ This skill provides audio transcription (speech-to-text) and audio generation (t
 
 ## Defaults
 
-- Transcription model: `google/gemini-2.5-flash`
-- Generation model: `openai/gpt-4o-audio-preview`
+- Transcription model: `openrouter/auto`
+- Generation model: `openai/gpt-audio-mini`
 - Generation format: `mp3`
 - Generation stream: `false`
 
@@ -79,13 +79,13 @@ build/openrouter-audio/openrouter-audio --help
 build/openrouter-audio/openrouter-audio transcribe recording.wav
 
 # Transcribe with custom prompt/model
-build/openrouter-audio/openrouter-audio transcribe meeting.mp3 --prompt "Summarize the call" --model google/gemini-2.5-flash
+build/openrouter-audio/openrouter-audio transcribe meeting.mp3 --prompt "Summarize the call" --model openrouter/auto
 
 # Generate with defaults (format=mp3, stream=false)
 build/openrouter-audio/openrouter-audio generate "Hello world"
 
 # Generate with explicit options and model override
-build/openrouter-audio/openrouter-audio generate "Welcome" --voice nova --format wav --stream false --model openai/gpt-audio
+build/openrouter-audio/openrouter-audio generate "Welcome" --voice nova --format wav --stream false --model openai/gpt-audio-mini
 ```
 
 ## Output Behavior
