@@ -11,7 +11,7 @@ This skill provides audio transcription (speech-to-text) and audio generation (t
 
 - A CLI utility with two commands: `transcribe` and `generate`
 - OpenRouter API integration using `OPENROUTER_API_KEY`
-- Build artifacts suitable for OpenClaw skill packaging in `./openrouter-audio/`
+- Runtime usage of a prebuilt skill CLI located at `./openrouter-audio/openrouter-audio`
 
 ## Capabilities
 
@@ -36,30 +36,6 @@ This skill provides audio transcription (speech-to-text) and audio generation (t
 - Generation format: `pcm16`
 - Generation requests always use `stream: true`
 - Generation prompt default: `Generate audio that speaks exactly the user's content.`
-
-## Build
-
-Build JS CLI artifacts:
-
-```bash
-npm run build
-```
-
-Output:
-
-- `./openrouter-audio/openrouter-audio.js` (JS CLI bundle)
-- `./openrouter-audio/openrouter-audio` (bash wrapper launcher)
-- `./openrouter-audio/SKILL.md`
-
-Optional native binary build for current OS/CPU:
-
-```bash
-npm run build:bin
-```
-
-Output:
-
-- `./openrouter-audio/openrouter-audio-bin`
 
 ## Environment
 
