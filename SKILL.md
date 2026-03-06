@@ -15,81 +15,61 @@ metadata:
 
 # OpenRouter Audio
 
-This skill provides audio transcription (speech-to-text) and audio generation (text-to-speech) capabilities using OpenRouter's multimodal API.
+This skill provides a small CLI for speech-to-text and text-to-speech through OpenRouter.
 
-## What This Skill Provides
+## Main Keys
 
-- A CLI utility with two commands: `transcribe` and `generate`
-- Runtime usage of a prebuilt skill CLI located at `{baseDir}/openrouter-audio`
+- `name`: Skill ID used by the runtime.
+- `description`: When to use this skill and what it does.
+- `homepage`: Project/source reference.
+- `metadata.openclaw.emoji`: Visual marker for this skill.
+- `metadata.openclaw.requires.env`: Required environment variables.
+- `metadata.openclaw.primaryEnv`: Primary variable to check first (`OPENROUTER_API_KEY`).
 
-## Capabilities
+## Core Behavior
 
-### Transcription
-- Input formats: wav, mp3, aiff, aac, ogg, flac, m4a, pcm16, pcm24
-- Model override support (`--model`)
-- Available audio-input models are shown in `--help`
-- Custom prompt support (`--prompt`)
+- Command path: `{baseDir}/openrouter-audio`
+- Main commands: `transcribe`, `generate`
+- API key source: `OPENROUTER_API_KEY` only
+- `generate` output: system tmp by default, or explicit path via `--out`
 
-### Audio Generation (TTS)
-- Voices: alloy, echo, fable, onyx, nova, shimmer
-- Output formats: wav, mp3, ogg, pcm16
-- Generated files are saved to system tmp by default, or to `--out` path when provided
-- If multiple files are produced, additional files use numeric suffixes near the target `--out` path
-- Returns JSON including generated path(s)
-- Model override support (`--model`)
-- Available audio-output models are shown in `--help`
-- Custom prompt support (`--prompt`)
+## Defaults (Recommended)
 
-## Defaults
+Use defaults unless the user explicitly asks for overrides:
+- Transcribe model: `openrouter/auto`
+- Generate model: `openai/gpt-audio-mini`
+- Generate voice: `alloy`
+- Generate format: `mp3`
 
-- Transcription model: `openrouter/auto`
-- Generation model: `openai/gpt-audio-mini`
-- Generation voice: `alloy`
-- Generation format: `mp3`
-- Recommended usage: prefer default parameters unless the user explicitly needs overrides
+## Models and Formats
 
-## Format Option (`--format`)
+Do not hardcode long model/format inventories in prompts.  
+Always check current supported values via CLI help:
 
-- `transcribe`: `--format` sets the input audio format explicitly (otherwise it is inferred from file extension).
-- `generate`: `--format` sets the output audio format (default: `mp3`).
-- Transcribe supported input formats: `wav`, `mp3`, `aiff`, `aac`, `ogg`, `flac`, `m4a`, `pcm16`, `pcm24`.
-- Generate supported output formats: `wav`, `mp3`, `ogg`, `pcm16`.
-
-## Output Path Option (`--out`)
-
-- `generate` without `--out` writes output file(s) to the system tmp directory.
-- `generate --out <path>` writes output to your explicit target path.
-- If more than one output file is created, additional files use numeric suffixes based on the provided `--out` path.
+```bash
+{baseDir}/openrouter-audio --help
+```
 
 ## Usage
 
 ```bash
-# Help
+# Full help (models, formats, options)
 {baseDir}/openrouter-audio --help
 
-# Transcribe
+# Transcribe from a local file
 {baseDir}/openrouter-audio transcribe recording.wav
 
-# Transcribe with custom prompt/model
-{baseDir}/openrouter-audio transcribe meeting.mp3 --prompt "Summarize the call" --model openrouter/auto
-
-# Generate with defaults (recommended, format=mp3)
+# Generate with defaults (recommended)
 {baseDir}/openrouter-audio generate "Hello world"
 
-# Generate with explicit options and model override
-{baseDir}/openrouter-audio generate "Welcome" --voice nova --format wav --model openai/gpt-audio-mini
-
-# Generate to a specific file path
+# Generate to an explicit output path
 {baseDir}/openrouter-audio generate "Welcome" --out ./artifacts/welcome.mp3
-
-# Generate with custom prompt override
-{baseDir}/openrouter-audio generate "Welcome" --prompt "Speak the exact message text with a calm and clear narration style."
 ```
 
 ## Output Behavior
 
-- `transcribe` prints transcription text to stdout.
-- `generate` prints JSON with fields:
-  - `paths`: generated file path array (tmp by default, or explicit `--out` path)
-  - `transcript`: transcript text (if provided by API)
-  - `format`: effective output format
+- `transcribe` prints transcript text to stdout.
+- `generate` prints JSON with:
+  - `paths` (generated audio file path(s))
+  - `transcript` (when available)
+  - `format` (final output format)
