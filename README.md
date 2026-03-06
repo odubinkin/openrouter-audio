@@ -124,7 +124,7 @@ build/openrouter-audio/openrouter-audio generate "Welcome" --out ./artifacts/wel
 # override the default generation prompt
 build/openrouter-audio/openrouter-audio generate "Welcome" --prompt "Speak with a calm and clear narration style."
 
-# dry-run: no API call, only planned tmp output path
+# dry-run: no API call, only planned output path
 build/openrouter-audio/openrouter-audio generate "Test" --dry-run
 ```
 

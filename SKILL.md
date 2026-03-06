@@ -76,6 +76,6 @@ This skill provides audio transcription (speech-to-text) and audio generation (t
 
 - `transcribe` prints transcription text to stdout.
 - `generate` prints JSON with fields:
-  - `paths`: generated file path array in system tmp
+  - `paths`: generated file path array (tmp by default, or explicit `--out` path)
   - `transcript`: transcript text (if provided by API)
   - `format`: effective output format
