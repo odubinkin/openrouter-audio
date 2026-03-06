@@ -40,8 +40,8 @@ test("help prints usage and command overview", () => {
   const result = runCli(["--help"]);
   assert.equal(result.status, 0);
   assert.match(result.stdout, /Usage:/);
-  assert.match(result.stdout, /openrouter\.sh transcribe/);
-  assert.match(result.stdout, /openrouter\.sh generate/);
+  assert.match(result.stdout, /openrouter-audio\.sh transcribe/);
+  assert.match(result.stdout, /openrouter-audio\.sh generate/);
 });
 
 test("unknown command returns non-zero with clear error", () => {
@@ -86,11 +86,14 @@ test("generate --dry-run with --out returns resolved output path", () => {
   assert.deepEqual(payload.paths, [path.resolve(outPath)]);
 });
 
-test("generate --dry-run uses OPENCLAW_STATE_DIR/tmp when directory exists", () => {
-  const workspaceDir = createTempDir("workspace");
+test("generate --dry-run uses OPENCLAW_STATE_DIR/workspace/tmp when workspace directory exists", () => {
+  const stateDir = createTempDir("state");
+  const workspaceDir = path.join(stateDir, "workspace");
+  mkdirSync(workspaceDir, { recursive: true });
+
   const result = runCli(["generate", "hello", "--dry-run"], {
     OPENROUTER_API_KEY: null,
-    OPENCLAW_STATE_DIR: workspaceDir,
+    OPENCLAW_STATE_DIR: stateDir,
   });
   assert.equal(result.status, 0);
 

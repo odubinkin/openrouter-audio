@@ -268,31 +268,26 @@ function isExistingDirectory(path: string): boolean {
   }
 }
 
-function resolveWorkspaceDir(): string | undefined {
-  const stateDir = process.env.OPENCLAW_STATE_DIR;
-  if (stateDir && isExistingDirectory(stateDir)) {
+function resolveStateDir(): string {
+  const stateDir = process.env.OPENCLAW_STATE_DIR?.trim();
+  if (stateDir) {
     return resolvePath(stateDir);
   }
+  return joinPath(os.homedir(), ".openclaw");
+}
 
-  const profile = process.env.OPENCLAW_PROFILE;
+function resolveWorkspaceDir(): string {
+  const stateDir = resolveStateDir();
+  const profile = process.env.OPENCLAW_PROFILE?.trim();
   if (profile) {
-    const profileWorkspaceDir = joinPath(os.homedir(), ".openclaw", `workspace-${profile}`);
-    if (isExistingDirectory(profileWorkspaceDir)) {
-      return profileWorkspaceDir;
-    }
+    return joinPath(stateDir, `workspace-${profile}`);
   }
-
-  const defaultWorkspaceDir = joinPath(os.homedir(), ".openclaw", "workspace");
-  if (isExistingDirectory(defaultWorkspaceDir)) {
-    return defaultWorkspaceDir;
-  }
-
-  return undefined;
+  return joinPath(stateDir, "workspace");
 }
 
 function resolveDefaultTmpDir(): string {
   const workspaceDir = resolveWorkspaceDir();
-  if (!workspaceDir) {
+  if (!isExistingDirectory(workspaceDir)) {
     return os.tmpdir();
   }
 

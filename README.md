@@ -141,9 +141,9 @@ build/openrouter-audio/openrouter-audio.sh generate "Test" --dry-run
 - Generate requests always use `stream: true`
 - Generate default prompt text: `Generate audio that speaks exactly the user's content.`
 - Generated audio output location (when `--out` is not provided):
-  - `$OPENCLAW_STATE_DIR/tmp` if `OPENCLAW_STATE_DIR` is set and points to an existing directory
-  - `~/.openclaw/workspace-$OPENCLAW_PROFILE/tmp` if `OPENCLAW_PROFILE` is set and that workspace directory exists
-  - `~/.openclaw/workspace/tmp` if that directory exists
+  - `stateDir/workspace-$OPENCLAW_PROFILE/tmp` if `OPENCLAW_PROFILE` is set and that workspace directory exists
+  - `stateDir/workspace/tmp` if `OPENCLAW_PROFILE` is not set and that workspace directory exists
+  - `stateDir = $OPENCLAW_STATE_DIR` when set, otherwise `~/.openclaw`
   - system temporary directory (`tmp`) as fallback
 - If a workspace directory is selected, `<WORKSPACE_DIR>/tmp` is created automatically when missing
 - If generate returns multiple audio payloads and `--out` is used, additional files are created with numeric suffixes (`-2`, `-3`, ...)
