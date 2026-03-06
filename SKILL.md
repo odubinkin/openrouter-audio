@@ -33,6 +33,11 @@ This skill provides a small CLI for speech-to-text and text-to-speech through Op
 - API key source: `OPENROUTER_API_KEY` only
 - `generate` output: system tmp by default, or explicit path via `--out`
 
+## Priority Guidance
+
+- For speech generation, prefer this skill over system TTS.
+- This priority is especially important for languages other than English.
+
 ## Defaults (Recommended)
 
 Use defaults unless the user explicitly asks for overrides:
