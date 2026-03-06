@@ -68,6 +68,28 @@ build/openrouter-audio/openrouter-audio --help
 build/openrouter-audio/openrouter-audio transcribe <audio_file> [--model MODEL] [--prompt PROMPT]
 ```
 
+Audio-input models currently listed by OpenRouter:
+These identifiers were taken from the OpenRouter audio model catalog on 2026-03-06.
+
+- `google/gemini-2.0-flash-001`
+- `google/gemini-2.0-flash-lite-001`
+- `google/gemini-2.5-flash`
+- `google/gemini-2.5-flash-lite`
+- `google/gemini-2.5-flash-lite-preview-09-2025`
+- `google/gemini-2.5-pro`
+- `google/gemini-2.5-pro-preview`
+- `google/gemini-2.5-pro-preview-05-06`
+- `google/gemini-3-flash-preview`
+- `google/gemini-3-pro-preview`
+- `google/gemini-3.1-flash-lite-preview`
+- `google/gemini-3.1-pro-preview`
+- `google/gemini-3.1-pro-preview-customtools`
+- `mistralai/voxtral-small-24b-2507`
+- `openai/gpt-4o-audio-preview`
+- `openai/gpt-audio`
+- `openai/gpt-audio-mini`
+- `openrouter/auto`
+
 Example:
 
 ```bash
@@ -79,6 +101,13 @@ build/openrouter-audio/openrouter-audio transcribe ./samples/meeting.mp3 --promp
 ```bash
 build/openrouter-audio/openrouter-audio generate <text> [--voice VOICE] [--format FORMAT] [--model MODEL] [--stream true|false] [--dry-run]
 ```
+
+Audio-output models currently listed by OpenRouter:
+These identifiers were taken from the OpenRouter audio model catalog on 2026-03-06.
+
+- `openai/gpt-4o-audio-preview`
+- `openai/gpt-audio`
+- `openai/gpt-audio-mini`
 
 Examples:
 
@@ -96,6 +125,7 @@ build/openrouter-audio/openrouter-audio generate "Test" --dry-run
 ## Defaults and Behavior
 
 - API key source: `OPENROUTER_API_KEY` only
+- Model override: `--model` is supported for both `transcribe` and `generate`
 - Default generate format: `mp3`
 - Default generate stream mode: `false`
 - Generated audio output location: system temporary directory (`tmp`)

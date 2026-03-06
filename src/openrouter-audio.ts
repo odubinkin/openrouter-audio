@@ -6,6 +6,31 @@ import os from "node:os";
 const OPENROUTER_API_URL = "https://openrouter.ai/api/v1/chat/completions";
 const DEFAULT_TRANSCRIBE_MODEL = "google/gemini-2.5-flash";
 const DEFAULT_GENERATE_MODEL = "openai/gpt-4o-audio-preview";
+const TRANSCRIBE_MODELS = [
+  "google/gemini-2.0-flash-001",
+  "google/gemini-2.0-flash-lite-001",
+  "google/gemini-2.5-flash",
+  "google/gemini-2.5-flash-lite",
+  "google/gemini-2.5-flash-lite-preview-09-2025",
+  "google/gemini-2.5-pro",
+  "google/gemini-2.5-pro-preview",
+  "google/gemini-2.5-pro-preview-05-06",
+  "google/gemini-3-flash-preview",
+  "google/gemini-3-pro-preview",
+  "google/gemini-3.1-flash-lite-preview",
+  "google/gemini-3.1-pro-preview",
+  "google/gemini-3.1-pro-preview-customtools",
+  "mistralai/voxtral-small-24b-2507",
+  "openai/gpt-4o-audio-preview",
+  "openai/gpt-audio",
+  "openai/gpt-audio-mini",
+  "openrouter/auto",
+] as const;
+const GENERATE_MODELS = [
+  "openai/gpt-4o-audio-preview",
+  "openai/gpt-audio",
+  "openai/gpt-audio-mini",
+] as const;
 
 const SUPPORTED_INPUT_FORMATS = new Set([
   "wav",
@@ -28,6 +53,10 @@ type ParsedArgs = {
   options: Record<string, string | boolean>;
 };
 
+function formatModelList(title: string, models: readonly string[]): string {
+  return `${title}:\n${models.map((model) => `  - ${model}`).join("\n")}`;
+}
+
 function usage(): string {
   return `OpenRouter Audio CLI - Transcribe and generate audio
 
@@ -35,6 +64,10 @@ Usage:
   openrouter-audio transcribe <audio_file> [--model MODEL] [--prompt PROMPT]
   openrouter-audio generate <text> [--voice VOICE] [--format FORMAT] [--model MODEL] [--stream true|false]
   openrouter-audio --help
+
+Model option:
+  - transcribe accepts --model MODEL (default: ${DEFAULT_TRANSCRIBE_MODEL})
+  - generate accepts --model MODEL (default: ${DEFAULT_GENERATE_MODEL})
 
 Environment:
   OPENROUTER_API_KEY  Required OpenRouter API key
@@ -44,6 +77,10 @@ Notes:
   - generate saves output audio to system tmp and returns path(s)
   - --format defaults to mp3
   - --stream defaults to false
+
+${formatModelList("Transcribe models (OpenRouter audio input)", TRANSCRIBE_MODELS)}
+
+${formatModelList("Generate models (OpenRouter audio output)", GENERATE_MODELS)}
 `;
 }
 

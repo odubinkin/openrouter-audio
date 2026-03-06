@@ -19,12 +19,14 @@ This skill provides audio transcription (speech-to-text) and audio generation (t
 - Input formats: wav, mp3, aiff, aac, ogg, flac, m4a, pcm16, pcm24
 - Custom prompt support (`--prompt`)
 - Model override support (`--model`)
+- Available audio-input models are shown in `--help`
 
 ### Audio Generation (TTS)
 - Voices: alloy, echo, fable, onyx, nova, shimmer
 - Output formats: wav, mp3, flac, opus, pcm16
 - Generated files are saved to the system tmp directory
 - Returns JSON including generated path(s)
+- Available audio-output models are shown in `--help`
 
 ## Defaults
 
@@ -82,8 +84,8 @@ build/openrouter-audio/openrouter-audio transcribe meeting.mp3 --prompt "Summari
 # Generate with defaults (format=mp3, stream=false)
 build/openrouter-audio/openrouter-audio generate "Hello world"
 
-# Generate with explicit options
-build/openrouter-audio/openrouter-audio generate "Welcome" --voice nova --format wav --stream false
+# Generate with explicit options and model override
+build/openrouter-audio/openrouter-audio generate "Welcome" --voice nova --format wav --stream false --model openai/gpt-audio
 ```
 
 ## Output Behavior
@@ -99,3 +101,5 @@ build/openrouter-audio/openrouter-audio generate "Welcome" --voice nova --format
 
 - `--dry-run` is supported for `generate` and returns expected tmp output path(s) without API call.
 - If required env var is missing, the CLI exits with an error.
+- `--help` includes the current OpenRouter audio-input and audio-output model identifiers used for `--model`.
+- Embedded model lists were refreshed from OpenRouter catalog pages on 2026-03-06.
