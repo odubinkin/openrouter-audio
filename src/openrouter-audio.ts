@@ -73,9 +73,9 @@ function usage(): string {
   return `OpenRouter Audio CLI - Transcribe and generate audio
 
 Usage:
-  openrouter.sh transcribe <audio_file> [--format FORMAT] [--model MODEL] [--prompt PROMPT]
-  openrouter.sh generate <text> [--voice VOICE] [--format FORMAT] [--model MODEL] [--prompt PROMPT] [--out PATH] [--dry-run]
-  openrouter.sh --help
+  openrouter-audio.sh transcribe <audio_file> [--format FORMAT] [--model MODEL] [--prompt PROMPT]
+  openrouter-audio.sh generate <text> [--voice VOICE] [--format FORMAT] [--model MODEL] [--prompt PROMPT] [--out PATH] [--dry-run]
+  openrouter-audio.sh --help
 
 Model option:
   - transcribe accepts --model MODEL (default: ${DEFAULT_TRANSCRIBE_MODEL})
