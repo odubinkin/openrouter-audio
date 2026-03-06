@@ -130,6 +130,7 @@ build/openrouter-audio/openrouter-audio generate "Test" --dry-run
 - Default generate model: `openai/gpt-audio-mini`
 - Default generate format: `pcm16`
 - Generate requests always use `stream: true`
+- Generate requests include a default English instruction to return only the spoken transcript with no extra commentary
 - Generated audio output location: system temporary directory (`tmp`)
 - `generate` output: JSON with `paths`, `transcript`, `format`
 

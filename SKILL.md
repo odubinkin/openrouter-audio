@@ -34,6 +34,7 @@ This skill provides audio transcription (speech-to-text) and audio generation (t
 - Generation model: `openai/gpt-audio-mini`
 - Generation format: `pcm16`
 - Generation requests always use `stream: true`
+- Generation uses a default English instruction to keep transcript output limited to the spoken text
 
 ## Build
 

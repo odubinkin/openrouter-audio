@@ -6,6 +6,8 @@ import os from "node:os";
 const OPENROUTER_API_URL = "https://openrouter.ai/api/v1/chat/completions";
 const DEFAULT_TRANSCRIBE_MODEL = "openrouter/auto";
 const DEFAULT_GENERATE_MODEL = "openai/gpt-audio-mini";
+const DEFAULT_GENERATE_TRANSCRIPT_PROMPT =
+  "Generate audio that speaks exactly the user's text. Return only the verbatim transcript of the spoken audio and no additional commentary, explanation, or extra text.";
 const TRANSCRIBE_MODELS = [
   "google/gemini-2.0-flash-001",
   "google/gemini-2.0-flash-lite-001",
@@ -390,7 +392,10 @@ async function generateAudio(
 
   const payload = {
     model: model ?? DEFAULT_GENERATE_MODEL,
-    messages: [{ role: "user", content: text }],
+    messages: [
+      { role: "system", content: DEFAULT_GENERATE_TRANSCRIPT_PROMPT },
+      { role: "user", content: text },
+    ],
     modalities: ["text", "audio"],
     audio: {
       voice,
