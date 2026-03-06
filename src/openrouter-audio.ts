@@ -64,7 +64,7 @@ function usage(): string {
   return `OpenRouter Audio CLI - Transcribe and generate audio
 
 Usage:
-  openrouter-audio transcribe <audio_file> [--model MODEL] [--prompt PROMPT]
+  openrouter-audio transcribe <audio_file> [--format FORMAT] [--model MODEL] [--prompt PROMPT]
   openrouter-audio generate <text> [--voice VOICE] [--format FORMAT] [--model MODEL] [--prompt PROMPT]
   openrouter-audio --help
 
@@ -77,6 +77,7 @@ Environment:
 
 Notes:
   - API key is only read from OPENROUTER_API_KEY
+  - transcribe infers input format from file extension unless --format is set
   - generate saves output audio to system tmp and returns path(s)
   - --format defaults to pcm16
   - generate always uses stream=true for audio output
@@ -154,6 +155,19 @@ function getAudioFormatFromPath(audioPath: string): string {
   return "wav";
 }
 
+function resolveInputAudioFormat(audioPath: string, explicitFormat?: string): string {
+  if (!explicitFormat) {
+    return getAudioFormatFromPath(audioPath);
+  }
+
+  const normalizedFormat = explicitFormat.toLowerCase();
+  if (!SUPPORTED_INPUT_FORMATS.has(normalizedFormat)) {
+    die(`Error: Unsupported transcribe format '${explicitFormat}'. Use: ${Array.from(SUPPORTED_INPUT_FORMATS).join(", ")}`);
+  }
+
+  return normalizedFormat;
+}
+
 function extractTextContent(content: unknown): string {
   if (typeof content === "string") {
     return content;
@@ -174,7 +188,7 @@ function extractTextContent(content: unknown): string {
   return parts.join("");
 }
 
-async function transcribeAudio(audioPath: string, model?: string, prompt?: string): Promise<string> {
+async function transcribeAudio(audioPath: string, model?: string, prompt?: string, format?: string): Promise<string> {
   const apiKey = getApiKey();
 
   if (!existsSync(audioPath)) {
@@ -183,7 +197,7 @@ async function transcribeAudio(audioPath: string, model?: string, prompt?: strin
 
   const audioBytes = readFileSync(audioPath);
   const base64Audio = audioBytes.toString("base64");
-  const audioFormat = getAudioFormatFromPath(audioPath);
+  const audioFormat = resolveInputAudioFormat(audioPath, format);
 
   const payload = {
     model: model ?? DEFAULT_TRANSCRIBE_MODEL,
@@ -451,7 +465,8 @@ async function main(): Promise<void> {
 
     const model = getStringOption(parsed.options, "model");
     const prompt = getStringOption(parsed.options, "prompt");
-    const text = await transcribeAudio(audioFile, model, prompt);
+    const format = getStringOption(parsed.options, "format");
+    const text = await transcribeAudio(audioFile, model, prompt, format);
     process.stdout.write(`${text}\n`);
     return;
   }

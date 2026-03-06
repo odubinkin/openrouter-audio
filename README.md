@@ -65,7 +65,7 @@ build/openrouter-audio/openrouter-audio --help
 ### Transcribe
 
 ```bash
-build/openrouter-audio/openrouter-audio transcribe <audio_file> [--model MODEL] [--prompt PROMPT]
+build/openrouter-audio/openrouter-audio transcribe <audio_file> [--format FORMAT] [--model MODEL] [--prompt PROMPT]
 ```
 
 Audio-input models currently listed by OpenRouter:
@@ -129,6 +129,7 @@ build/openrouter-audio/openrouter-audio generate "Test" --dry-run
 
 - API key source: `OPENROUTER_API_KEY` only
 - Model override: `--model` is supported for both `transcribe` and `generate`
+- Transcribe format: `--format` overrides auto-detection from file extension
 - Default transcribe model: `openrouter/auto`
 - Default generate model: `openai/gpt-audio-mini`
 - Default generate format: `pcm16`
