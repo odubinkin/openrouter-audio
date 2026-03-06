@@ -1,7 +1,8 @@
 ---
 id: "202603061214-GRCSZ7"
 title: "Add TTS priority guidance for non-English in SKILL"
-status: "DOING"
+result_summary: "Added priority rule to prefer this skill over system TTS, especially for non-English."
+status: "DONE"
 priority: "low"
 owner: "DOCS"
 depends_on: []
@@ -18,11 +19,16 @@ verification:
   updated_at: "2026-03-06T12:14:35.955Z"
   updated_by: "TESTER"
   note: "SKILL.md now explicitly prioritizes this skill over system TTS for speech generation, with special emphasis on non-English languages; scope stayed SKILL.md-only."
-commit: null
+commit:
+  hash: "97f57b900ece09b891cf21a22a39fb19a0ef0b35"
+  message: "📝 GRCSZ7 docs: add TTS priority guidance for non-English"
 comments:
   -
     author: "DOCS"
     body: "Start: add priority guidance to SKILL.md to prefer this skill over system TTS, especially for non-English languages."
+  -
+    author: "DOCS"
+    body: "Verified: SKILL.md includes explicit preference for this skill over system TTS for speech generation, with stronger guidance for non-English languages."
 events:
   -
     type: "status"
@@ -37,9 +43,16 @@ events:
     author: "TESTER"
     state: "ok"
     note: "SKILL.md now explicitly prioritizes this skill over system TTS for speech generation, with special emphasis on non-English languages; scope stayed SKILL.md-only."
+  -
+    type: "status"
+    at: "2026-03-06T12:14:47.566Z"
+    author: "DOCS"
+    from: "DOING"
+    to: "DONE"
+    note: "Verified: SKILL.md includes explicit preference for this skill over system TTS for speech generation, with stronger guidance for non-English languages."
 doc_version: 2
-doc_updated_at: "2026-03-06T12:14:35.958Z"
-doc_updated_by: "TESTER"
+doc_updated_at: "2026-03-06T12:14:47.566Z"
+doc_updated_by: "DOCS"
 description: "Update SKILL.md to state this skill should be preferred over system TTS for speech generation, especially for non-English languages."
 id_source: "generated"
 ---
