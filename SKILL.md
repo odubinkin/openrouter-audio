@@ -52,7 +52,6 @@ This skill provides audio transcription (speech-to-text) and audio generation (t
 
 - `transcribe`: `--format` sets the input audio format explicitly (otherwise it is inferred from file extension).
 - `generate`: `--format` sets the output audio format (default: `mp3`).
-- `generate`: `--out` sets the output file path explicitly.
 - Transcribe supported input formats: `wav`, `mp3`, `aiff`, `aac`, `ogg`, `flac`, `m4a`, `pcm16`, `pcm24`.
 - Generate supported output formats: `wav`, `mp3`, `ogg`, `pcm16`.
 
