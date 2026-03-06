@@ -1,20 +1,26 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { spawnSync } from "node:child_process";
-import { mkdtempSync, writeFileSync } from "node:fs";
-import { tmpdir } from "node:os";
+import { mkdtempSync, mkdirSync, rmSync, writeFileSync } from "node:fs";
 import path from "node:path";
 
 const ROOT_DIR = process.cwd();
 const CLI_PATH = path.join(ROOT_DIR, "build", "openrouter-audio", "openrouter-audio.js");
+const TEST_TMP_ROOT = path.join(ROOT_DIR, ".tmp-cli-tests");
+
+function createTempDir(prefix) {
+  mkdirSync(TEST_TMP_ROOT, { recursive: true });
+  return mkdtempSync(path.join(TEST_TMP_ROOT, `${prefix}-`));
+}
 
 function runCli(args, envPatch = {}) {
   const env = { ...process.env };
-  if (Object.prototype.hasOwnProperty.call(envPatch, "OPENROUTER_API_KEY")) {
-    if (envPatch.OPENROUTER_API_KEY === null) {
-      delete env.OPENROUTER_API_KEY;
+
+  for (const [key, value] of Object.entries(envPatch)) {
+    if (value === null || value === undefined) {
+      delete env[key];
     } else {
-      env.OPENROUTER_API_KEY = envPatch.OPENROUTER_API_KEY;
+      env[key] = String(value);
     }
   }
 
@@ -68,7 +74,7 @@ test("generate --dry-run returns JSON payload with default format", () => {
 });
 
 test("generate --dry-run with --out returns resolved output path", () => {
-  const tmp = mkdtempSync(path.join(tmpdir(), "openrouter-audio-test-"));
+  const tmp = createTempDir("dry-run-out");
   const outPath = path.join(tmp, "custom-output.wav");
   const result = runCli(["generate", "welcome", "--dry-run", "--format", "wav", "--out", outPath], {
     OPENROUTER_API_KEY: null,
@@ -80,6 +86,20 @@ test("generate --dry-run with --out returns resolved output path", () => {
   assert.deepEqual(payload.paths, [path.resolve(outPath)]);
 });
 
+test("generate --dry-run uses OPENCLAW_STATE_DIR/tmp when directory exists", () => {
+  const workspaceDir = createTempDir("workspace");
+  const result = runCli(["generate", "hello", "--dry-run"], {
+    OPENROUTER_API_KEY: null,
+    OPENCLAW_STATE_DIR: workspaceDir,
+  });
+  assert.equal(result.status, 0);
+
+  const payload = JSON.parse(result.stdout);
+  assert.equal(payload.paths.length, 1);
+  const expectedPrefix = `${path.join(workspaceDir, "tmp")}${path.sep}`;
+  assert.equal(payload.paths[0].startsWith(expectedPrefix), true);
+});
+
 test("generate rejects unsupported voice values", () => {
   const result = runCli(["generate", "hello", "--voice", "invalid-voice"], { OPENROUTER_API_KEY: null });
   assert.equal(result.status, 1);
@@ -87,7 +107,7 @@ test("generate rejects unsupported voice values", () => {
 });
 
 test("transcribe requires API key when not provided", () => {
-  const tmp = mkdtempSync(path.join(tmpdir(), "openrouter-audio-test-"));
+  const tmp = createTempDir("transcribe");
   const audioPath = path.join(tmp, "sample.wav");
   writeFileSync(audioPath, Buffer.alloc(16));
 
@@ -100,4 +120,8 @@ test("transcribe reports missing file when API key exists", () => {
   const result = runCli(["transcribe", "/definitely/missing/file.wav"], { OPENROUTER_API_KEY: "test-key" });
   assert.equal(result.status, 1);
   assert.match(result.stderr, /File not found:/);
+});
+
+test.after(() => {
+  rmSync(TEST_TMP_ROOT, { recursive: true, force: true });
 });

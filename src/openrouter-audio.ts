@@ -1,6 +1,6 @@
 #!/usr/bin/env node
-import { existsSync, readFileSync, writeFileSync } from "node:fs";
-import { extname, parse as parsePath, resolve as resolvePath } from "node:path";
+import { existsSync, mkdirSync, readFileSync, statSync, writeFileSync } from "node:fs";
+import { extname, join as joinPath, parse as parsePath, resolve as resolvePath } from "node:path";
 import os from "node:os";
 import { createMp3Encoder, createOggEncoder } from "wasm-media-encoders";
 
@@ -87,10 +87,10 @@ Environment:
 Notes:
   - API key is only read from OPENROUTER_API_KEY
   - transcribe infers input format from file extension unless --format is set
-  - generate saves output audio to tmp by default and returns path(s)
+  - generate saves output audio to WORKSPACE_DIR/tmp when OpenClaw workspace exists, otherwise system tmp
   - generate default voice is alloy
   - --format defaults to ${DEFAULT_GENERATE_FORMAT}
-  - --out writes generated file(s) to your path instead of tmp (additional files use numeric suffixes)
+  - --out writes generated file(s) to your path instead of default tmp selection (additional files use numeric suffixes)
   - --dry-run skips API call and returns planned output path(s)
   - generate always requests pcm16 from API and converts locally for other output formats
   - generate always uses stream=true for audio output
@@ -260,10 +260,58 @@ async function transcribeAudio(audioPath: string, model?: string, prompt?: strin
   return content;
 }
 
-function newTmpAudioPath(format: string, index: number): string {
+function isExistingDirectory(path: string): boolean {
+  try {
+    return statSync(path).isDirectory();
+  } catch {
+    return false;
+  }
+}
+
+function resolveWorkspaceDir(): string | undefined {
+  const stateDir = process.env.OPENCLAW_STATE_DIR;
+  if (stateDir && isExistingDirectory(stateDir)) {
+    return resolvePath(stateDir);
+  }
+
+  const profile = process.env.OPENCLAW_PROFILE;
+  if (profile) {
+    const profileWorkspaceDir = joinPath(os.homedir(), ".openclaw", `workspace-${profile}`);
+    if (isExistingDirectory(profileWorkspaceDir)) {
+      return profileWorkspaceDir;
+    }
+  }
+
+  const defaultWorkspaceDir = joinPath(os.homedir(), ".openclaw", "workspace");
+  if (isExistingDirectory(defaultWorkspaceDir)) {
+    return defaultWorkspaceDir;
+  }
+
+  return undefined;
+}
+
+function resolveDefaultTmpDir(): string {
+  const workspaceDir = resolveWorkspaceDir();
+  if (!workspaceDir) {
+    return os.tmpdir();
+  }
+
+  const workspaceTmpDir = joinPath(workspaceDir, "tmp");
+  if (existsSync(workspaceTmpDir) && !isExistingDirectory(workspaceTmpDir)) {
+    die(`Error: Expected directory but found non-directory path: ${workspaceTmpDir}`);
+  }
+
+  if (!existsSync(workspaceTmpDir)) {
+    mkdirSync(workspaceTmpDir, { recursive: true });
+  }
+
+  return workspaceTmpDir;
+}
+
+function newTmpAudioPath(format: string, index: number, tmpDir: string): string {
   const id = `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
   const suffix = index > 0 ? `-${index + 1}` : "";
-  return `${os.tmpdir()}/openrouter-audio-${id}${suffix}.${format}`;
+  return joinPath(tmpDir, `openrouter-audio-${id}${suffix}.${format}`);
 }
 
 function collectAudioPayloadsFromJson(result: unknown): AudioPayload[] {
@@ -462,9 +510,10 @@ async function convertPcm16ToFormat(pcm16Bytes: Buffer, format: string): Promise
 
 function resolveOutputPaths(format: string, count: number, outPath?: string): string[] {
   if (!outPath) {
+    const tmpDir = resolveDefaultTmpDir();
     const paths: string[] = [];
     for (let i = 0; i < count; i += 1) {
-      paths.push(newTmpAudioPath(format, i));
+      paths.push(newTmpAudioPath(format, i, tmpDir));
     }
     return paths;
   }

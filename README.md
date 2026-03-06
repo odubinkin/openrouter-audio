@@ -140,7 +140,12 @@ build/openrouter-audio/openrouter.sh generate "Test" --dry-run
 - Generate API request format is always `pcm16` for compatibility; local conversion is applied for `mp3`, `ogg`, and `wav`
 - Generate requests always use `stream: true`
 - Generate default prompt text: `Generate audio that speaks exactly the user's content.`
-- Generated audio output location: system temporary directory (`tmp`) by default, or `--out PATH` when provided
+- Generated audio output location (when `--out` is not provided):
+  - `$OPENCLAW_STATE_DIR/tmp` if `OPENCLAW_STATE_DIR` is set and points to an existing directory
+  - `~/.openclaw/workspace-$OPENCLAW_PROFILE/tmp` if `OPENCLAW_PROFILE` is set and that workspace directory exists
+  - `~/.openclaw/workspace/tmp` if that directory exists
+  - system temporary directory (`tmp`) as fallback
+- If a workspace directory is selected, `<WORKSPACE_DIR>/tmp` is created automatically when missing
 - If generate returns multiple audio payloads and `--out` is used, additional files are created with numeric suffixes (`-2`, `-3`, ...)
 - `generate` output: JSON with `paths`, `transcript`, `format`
 - `generate --dry-run`: skips API call and returns planned output path(s)

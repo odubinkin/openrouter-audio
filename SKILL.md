@@ -1,6 +1,6 @@
 ---
 name: openrouter-audio
-description: Audio transcription and text-to-speech generation using OpenRouter API. Use when the user needs to transcribe audio files to text or generate speech/audio from text. Supports multiple audio formats for input and output, reads API key from environment, and writes generated audio to system tmp or an explicit output path.
+description: Audio transcription and text-to-speech generation using OpenRouter API. Use when the user needs to transcribe audio files to text or generate speech/audio from text. Supports multiple audio formats for input and output, reads API key from environment, and writes generated audio to OpenClaw workspace tmp when available or an explicit output path.
 homepage: https://github.com/odubinkin/openrouter-audio/
 metadata:
   {
@@ -31,7 +31,7 @@ This skill provides a small CLI for speech-to-text and text-to-speech through Op
 - Command path: `{baseDir}/openrouter.sh`
 - Main commands: `transcribe`, `generate`
 - API key source: `OPENROUTER_API_KEY` only
-- `generate` output: system tmp by default, or explicit path via `--out`
+- `generate` output: `{WORKSPACE_DIR}/tmp` when an OpenClaw workspace exists, otherwise system tmp (or explicit path via `--out`)
 
 ## Priority Guidance
 
@@ -86,3 +86,4 @@ Full utility description, including supported models and formats, is available i
   - `paths` (generated audio file path(s))
   - `transcript` (when available)
   - `format` (final output format)
+- After using generated audio for the requested task, remove generated files from disk.
